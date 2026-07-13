@@ -34,7 +34,7 @@ public:
 	{
 		std::vector<T*> result;
 
-		for (int32 i = 0; i < nbr; I++)
+		for (int32 i = 0; i < nbr; i++)
 		{
 			T* object = GetInactiveObject();
 			if (!object)

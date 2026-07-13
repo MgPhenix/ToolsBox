@@ -12,17 +12,17 @@ public:
 	Vector2() :
 		x(0),
 		y(0)
-	{ }
+	{};
 
-	Vector2(T _x,T _y) :
+	Vector2(T _x, T _y) :
 		x(_x),
 		y(_y)
-	{ }
+	{};
 
 	Vector2(Vector2& vector2) :
 		x(vector2.x),
 		y(vector2.y)
-	{ }
+	{};
 
 	Vector2<T>& operator+=(const Vector2<T> & other)
 	{
@@ -72,17 +72,17 @@ public:
 		return *this;
 	};
 
-	Vector2<T> operator+(const Vector<T>& other) const
+	Vector2<T> operator+(const Vector2<T>& other) const
 	{
 		return Vector2<T>(x + other.x, y + other.y); 
 	};
 
-	Vector2<T> operator-(const Vector<T>& other) const
+	Vector2<T> operator-(const Vector2<T>& other) const
 	{
 		return Vector2<T>(x - other.x, y - other.y);
 	};
 
-	Vector2<T> operator*(const Vector<T>& other) const
+	Vector2<T> operator*(const Vector2<T>& other) const
 	{
 		return Vector2<T>(x * other.x, y * other.y);
 	};
@@ -92,7 +92,7 @@ public:
 		return Vector2<T>(x * other, y * other);
 	};
 
-	Vector2<T> operator/(const Vector<T>& other) const
+	Vector2<T> operator/(const Vector2<T>& other) const
 	{
 		if (other.x == 0 || other.y == 0) 
 			return *this;
@@ -107,9 +107,9 @@ public:
 	};
 
 
-	bool operator==(const Vector<T>& other) const
+	bool operator==(const Vector2<T>& other) const
 	{
-		return x == other.x && y == other.y
+		return x == other.x && y == other.y;
 	};
 
 	T Length()
