@@ -1,6 +1,8 @@
 #pragma once
 #include "PrimitiveTypes.h"
 
+
+//Doesn't work ? i think
 class Timer
 {
 private:

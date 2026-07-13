@@ -14,7 +14,7 @@ T Clamp(T val, T min, T max)
 int32 GetRandomNumber(int32 min, int32 max);
 
 template<typename T>
-T GetRandomValue(std::vector<T> vector)
+T GetRandomValue(const std::vector<T>& vector)
 {
 	if (vector.empty()) return 0;
 
