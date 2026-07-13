@@ -1,0 +1,54 @@
+{
+    "projects": {
+        "41064D5B-646E-5A2E-3A71-3DD14D2800F0": {
+            "config-debug": {
+                "additionalDependencies": [],
+                "additionalIncludeDirectories": [],
+                "additionalLibraryDirectories": [],
+                "preprocessorDefinitions": []
+            },
+            "config-release": {
+                "additionalDependencies": [],
+                "additionalIncludeDirectories": [],
+                "additionalLibraryDirectories": [],
+                "preprocessorDefinitions": []
+            },
+            "dependencies": [],
+            "dependents": ["5E477FF5-7E49-0565-2539-33F654030A3D"],
+            "name": "ToolsBox",
+            "property-lib": true,
+            "property-pch": false,
+            "property-vcpkg": false,
+            "property-window": false
+        },
+        "5E477FF5-7E49-0565-2539-33F654030A3D": {
+            "config-debug": {
+                "additionalDependencies": [],
+                "additionalIncludeDirectories": [],
+                "additionalLibraryDirectories": [],
+                "preprocessorDefinitions": []
+            },
+            "config-release": {
+                "additionalDependencies": [],
+                "additionalIncludeDirectories": [],
+                "additionalLibraryDirectories": [],
+                "preprocessorDefinitions": []
+            },
+            "dependencies": ["41064D5B-646E-5A2E-3A71-3DD14D2800F0"],
+            "dependents": [],
+            "name": "Test",
+            "property-lib": false,
+            "property-pch": false,
+            "property-vcpkg": false,
+            "property-window": false
+        }
+    },
+    "projects_name_to_guid": {
+        "Test": "5E477FF5-7E49-0565-2539-33F654030A3D",
+        "ToolsBox": "41064D5B-646E-5A2E-3A71-3DD14D2800F0"
+    },
+    "solution_guid": "5D01195C-3C18-4DAA-6817-3615143601B4",
+    "solution_name": "ToolsBox",
+    "startup_project": "",
+    "version": "2.0"
+}
