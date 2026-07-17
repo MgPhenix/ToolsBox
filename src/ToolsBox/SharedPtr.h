@@ -49,7 +49,7 @@ public:
 
 	SharedPtr& operator=(const SharedPtr& other)
 	{
-		if (this == other) return *this;
+		if (this == &other) return *this;
 
 		Release();
 		ptr = other.ptr;

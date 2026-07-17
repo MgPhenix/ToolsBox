@@ -13,6 +13,8 @@ T Clamp(T val, T min, T max)
 
 int32 GetRandomNumber(int32 min, int32 max);
 
+uint64 HashFNV_1A(const std::string& str);
+
 template<typename T>
 T GetRandomValue(const std::vector<T>& vector)
 {

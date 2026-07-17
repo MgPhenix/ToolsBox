@@ -26,7 +26,7 @@ public:
 
 	UniquePtr& operator=(UniquePtr&& other)
 	{
-		if (this == other) return *this;
+		if (this == &other) return *this;
 
 		ptr(other);
 		other.ptr = nullptr;
