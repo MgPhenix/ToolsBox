@@ -147,7 +147,7 @@ public:
 	bool LoadFile(const std::string& path, const std::string& customSignature);
 	void SaveInFile(const std::string& path);
 
-	void EraseData();
+	void EraseAllData();
 	
 	void AddData(TEntry& entry,const std::string& id, const std::string& path);
 

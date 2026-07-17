@@ -22,3 +22,38 @@ uint64 HashFNV_1A(const std::string& str)
 	}
 	return hash;
 }
+
+std::string GetName(const std::string& path)
+{
+	std::string name;
+	bool canSave = false;
+	for (int i = static_cast<int>(path.size()) - 1; i >= 0; i--)
+	{
+		if (path[i] == '.')
+		{
+			canSave = true;
+			continue;
+		}
+
+		if (path[i] == '/')
+			canSave = false;
+
+		if (canSave)
+			name = path[i] + name;
+	}
+
+	return name;
+}
+
+std::string GetExtension(const std::string& path)
+{
+	std::string extension;
+	for (int i = static_cast<int>(path.size()) - 1; i >= 0; i--)
+	{
+		extension = path[i] + extension;
+		if (path[i] == '.')
+			return extension;
+	}
+
+	return extension;
+}

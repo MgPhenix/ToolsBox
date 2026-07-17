@@ -138,7 +138,7 @@ void AssetEngine<THeader, TEntry>::SaveInFile(const std::string& path)
 }
 
 template<typename THeader, typename TEntry>
-void AssetEngine<THeader, TEntry>::EraseData()
+void AssetEngine<THeader, TEntry>::EraseAllData()
 {
 	for (auto& pair : m_dataMap)
 	{
