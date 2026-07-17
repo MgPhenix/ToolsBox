@@ -1,12 +1,12 @@
 #pragma once
 #include "PrimitiveTypes.h"
-#include "SmartPtrBase.h"
 
 template<typename T>
-class SharedPtr : public SmartPtrBase<T>
+class SharedPtr
 {
 private:
 
+	T* ptr;
 	int32* refcount;
 
 	void Release()
@@ -62,4 +62,12 @@ public:
 	};
 
 	int32 GetCount() { return refcount ? *refcount : 0; };
+
+	T* operator->() const {
+		return ptr;
+	};
+
+	T& operator*() const {
+		return *ptr;
+	};
 };

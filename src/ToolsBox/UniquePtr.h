@@ -1,9 +1,12 @@
 #pragma once
-#include "SmartPtrBase.h"
 
 template<typename T>
-class UniquePtr : public SmartPtrBase<T>
+class UniquePtr
 {
+private:
+
+	T* ptr;
+
 public:
 
 	UniquePtr(T* newPtr = nullptr) :
@@ -28,5 +31,13 @@ public:
 		ptr(other);
 		other.ptr = nullptr;
 		return *this;
-	}
+	};
+
+	T* operator->() const {
+		return ptr;
+	};
+
+	T& operator*() const {
+		return *ptr;
+	};
 };
