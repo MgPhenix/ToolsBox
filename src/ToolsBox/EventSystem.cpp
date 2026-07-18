@@ -6,21 +6,21 @@ EventSystem& EventSystem::GetInstance()
 	return instance;
 }
 
-ListenerID EventSystem::Subscribe(const std::string& emiter, std::function<void()> func)
+ListenerID EventSystem::Subscribe(const std::string& emiter, std::function<void(const EventData&)> func)
 {
 	ListenerID id = m_nextID++;
 	m_listeners[emiter].push_back({ id, std::move(func)});
 	return id;
 }
 
-ListenerID EventSystem::SubscribeOnce(const std::string& emiter, std::function<void()> func)
+ListenerID EventSystem::SubscribeOnce(const std::string& emiter, std::function<void(const EventData&)> func)
 {
 	ListenerID id = m_nextID++;
-	m_listeners[emiter].push_back({ id, [emiter, id, function = std::move(func)]() {
-		function();
+	m_listeners[emiter].push_back({ id, [emiter, id, function = std::move(func)](const EventData& data) {
+		function(data);
 		EventSystem::GetInstance().Unsubscribe(emiter, id);
 	}});
-
+	
 	return id;
 }
 
@@ -37,10 +37,10 @@ void EventSystem::Unsubscribe(const std::string& emiter, ListenerID id)
 	);
 }
 
-void EventSystem::Emit(const std::string& emiter)
+void EventSystem::Emit(const std::string& emiter, const EventData& data)
 {
 	for (auto& listener : m_listeners[emiter])
-		listener.m_func();
+		listener.m_func(data);
 }
 
 void EventSystem::EraseEmiter(const std::string& emiter)
@@ -53,7 +53,7 @@ void EventSystem::ClearAll()
 	m_listeners.clear();
 }
 
-EventSystem::Listener::Listener(ListenerID id, std::function<void()> func) :
-	m_id(id),
-	m_func(func)
-{}
+//EventSystem::Listener::Listener(ListenerID id, std::function<void()> func) :
+//	m_id(id),
+//	m_func(func)
+//{}

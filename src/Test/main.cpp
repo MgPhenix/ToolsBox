@@ -37,11 +37,11 @@ int main()
 	//	
 	//std::cout << test.GetCount() << std::endl;
 
-	ListenerID test = EventSystem::GetInstance().SubscribeOnce("Test", []() {std::cout << "test once" << std::endl; });
+	ListenerID test = EventSystem::GetInstance().SubscribeOnce("Test", [](const EventData& data) {std::cout << event_cast<int>(data) << std::endl; });
 
-	EventSystem::GetInstance().Emit("Test");
+	EventSystem::GetInstance().Emit("Test", 4);
 	//EventSystem::GetInstance().Unsubscribe("Test", test);
-	EventSystem::GetInstance().Emit("Test");
+	EventSystem::GetInstance().Emit("Test", 9);
 	EventSystem::GetInstance().ClearAll();
 
 	return 0;
