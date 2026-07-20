@@ -22,7 +22,7 @@ private:
 
 	struct Listener
 	{
-		ListenerID			  m_id;
+		ListenerID m_id;
 		std::function<void(const EventData&)> m_func;
 
 		//Listener(ListenerID id, std::function<void()> func);

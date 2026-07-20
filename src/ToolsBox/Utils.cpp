@@ -1,5 +1,19 @@
 #include "Utils.h"
 
+
+std::string SevertityToString(Severity severity)
+{
+	switch (severity)
+	{
+	case Severity::DEBUG:	 return "DEBUG";
+	case Severity::INFO:	 return "INFO";
+	case Severity::WARN:	 return "WARN";
+	case Severity::ERROR:	 return "ERROR";
+	case Severity::CRITICAL: return "CRTICAL";
+	default:
+		return "";
+	}
+}
 int32 GetRandomNumber(int32 min, int32 max)
 {
 	static std::random_device rd;

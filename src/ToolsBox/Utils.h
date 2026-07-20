@@ -3,6 +3,16 @@
 #include <vector>
 #include "PrimitiveTypes.h"
 
+enum class Severity
+{
+	DEBUG,
+	INFO,
+	WARN,
+	ERROR,
+	CRITICAL
+};
+
+std::string SevertityToString(Severity severity);
 
 
 int32 GetRandomNumber(int32 min, int32 max);

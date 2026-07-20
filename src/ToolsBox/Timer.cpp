@@ -17,7 +17,7 @@ float64 Timer::Start()
 float64 Timer::GetCurrentTime()
 {
     auto now = std::chrono::steady_clock::now();
-    auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch());
+    auto ms  = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch());
 
     return static_cast<float64>(ms.count());
 }
@@ -32,3 +32,24 @@ void Timer::ResetTimer()
     m_start = 0.f;
     m_end = 0.f;
 }
+
+//double PCFreq = 0.0;
+//int64 CounterStart = 0;
+//
+//void StartCounter()
+//{
+//    LARGE_INTEGER li;
+//    if (!QueryPerformanceFrequency(&li))
+//        std::cout << "QueryPerformanceFrequency failed!" << std::endl;
+//
+//    PCFreq = double(li.QuadPart) / 1000.0;
+//
+//    QueryPerformanceCounter(&li);
+//    CounterStart = li.QuadPart;
+//}
+//double GetCounter()
+//{
+//    LARGE_INTEGER li;
+//    QueryPerformanceCounter(&li);
+//    return double(li.QuadPart - CounterStart) / PCFreq;
+//}
