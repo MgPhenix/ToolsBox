@@ -1,7 +1,7 @@
 #include "include.h"
 #include <iostream>
 #include <fstream>
-#include "Logger.h"
+#include <ctime>
 
 class Test
 {
@@ -14,24 +14,24 @@ public:
 
 
 int main()
-{	
-	Timer timer;
-	float64 start = timer.Start();
+{
+	EventSystem& ES = EventSystem::GetInstance();
 
-	ListenerID test = EventSystem::GetInstance().SubscribeOnce("Test", [](const EventData& data) {std::cout << event_cast<int>(data) << std::endl; });
+	ES.Subscribe("test", [](const EventData& data) { std::cout << "test" << event_cast<int>(data) << std::endl; });
 
-	EventSystem::GetInstance().Emit("Test", 4);
-	//EventSystem::GetInstance().Unsubscribe("Test", test);
-	EventSystem::GetInstance().Emit("Test", 9);
-	EventSystem::GetInstance().ClearAll();
-	
-	Logfile logger;
+	ES.Emit("test", 43);
+
+	//Timer timer;
+	//float64 start = timer.Start();
+
+	//Logfile& logger = Logfile::GetInstance();
 	//logger.OpenFile("../../latest.log");
-	logger.SaveInFile({ Severity::WARN,"12:00:00","Ceci est un deuxieme test" });
 
-	float64 end = timer.End();
+	//logger.SaveInFile({ Severity::WARN,"18:00:00","Ceci est un deuxieme test" });
 
-	std::cout << "Start : " << start << " | End : " << end << " | Time : " << end - start << std::endl;
+	//float64 end = timer.End();
+
+	//std::cout << "Start : " << start << " | End : " << end << " | Time : " << end - start << std::endl;
 
 	return 0;
 }

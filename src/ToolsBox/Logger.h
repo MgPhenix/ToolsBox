@@ -20,15 +20,15 @@ private:
 
 public:
 	
-	Logfile& GetInstance()
-	{
-		static Logfile instance;
-		return instance;
-	}
+	static Logfile& GetInstance();
+
+	bool IsFileOpen();
 
 	void OpenFile(const std::string& path);
 	void SaveInFile(const Log& log);
 	void CloseFile();
+
+	void LOG(Severity severity, const std::string& message);
 
 	~Logfile();
 };

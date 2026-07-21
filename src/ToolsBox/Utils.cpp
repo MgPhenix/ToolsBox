@@ -1,4 +1,5 @@
 #include "Utils.h"
+#include <random>
 
 
 std::string SevertityToString(Severity severity)
@@ -27,7 +28,6 @@ int32 GetRandomNumber(int32 min, int32 max)
 
 uint64 HashFNV_1A(const std::string& str)
 {
-	//FNV 1a because why not
 	uint64 hash = 14695981039346656037ULL;
 	for (byte c : str)
 	{
@@ -37,7 +37,7 @@ uint64 HashFNV_1A(const std::string& str)
 	return hash;
 }
 
-std::string GetName(const std::string& path)
+std::string GetPathName(const std::string& path)
 {
 	std::string name;
 	bool canSave = false;
@@ -59,7 +59,18 @@ std::string GetName(const std::string& path)
 	return name;
 }
 
-std::string GetExtension(const std::string& path)
+std::string GetLocalTime()
+{
+	time_t timestamp = time(NULL);
+	struct tm datetime;
+	localtime_s(&datetime, &timestamp);
+	char output[50];
+
+	strftime(output, 50, "%H:%M:%S", &datetime);
+	return std::string(output);
+}
+
+std::string GetPathExtension(const std::string& path)
 {
 	std::string extension;
 	for (int i = static_cast<int>(path.size()) - 1; i >= 0; i--)

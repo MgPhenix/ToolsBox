@@ -2,7 +2,6 @@
 #include "PrimitiveTypes.h"
 
 
-//Doesn't work ? i think
 class Timer
 {
 private:
@@ -12,7 +11,7 @@ private:
 
 public:
 
-	Timer() = default;
+	Timer()  = default;
 	~Timer() = default;
 
 	float64 Start();

@@ -1,0 +1,10 @@
+namespace MonProjet1
+{
+    [bindable]
+    [default_interface]
+    runtimeclass Utils 
+    {
+        Utils();
+        Int32 MyProperty;
+    }
+}

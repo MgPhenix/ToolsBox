@@ -1,6 +1,7 @@
 #pragma once
 #include "AssetEngine.h"
 #include "Utils.h"
+#include "Config.h"
 #include <iostream>
 #include <fstream>
 
@@ -152,7 +153,11 @@ void AssetEngine<THeader, TEntry>::EraseAllData()
 template<typename THeader, typename TEntry>
 void AssetEngine<THeader, TEntry>::AddData(TEntry& entry, const std::string& id, const std::string& path)
 {
+#ifdef CPP_20
 	if (m_dataMap.contains(id))
+#else
+	if(m_data.count(id))
+#endif
 	{
 		std::cout << "Data with this id is already registered" << std::endl;
 		return;
