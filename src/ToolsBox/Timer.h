@@ -6,18 +6,18 @@ class Timer
 {
 private:
 
-	float64 m_start = 0.f;
-	float64 m_end = 0.f;
+	float32 m_start = 0.f;
+	float32 m_end	= 0.f;
 
 public:
 
 	Timer()  = default;
 	~Timer() = default;
 
-	float64 Start();
-	float64 End();
+	float32 Start();
+	float32 End();
 
-	float64 GetCurrentTime();
+	float32 GetCurrentTime();
 
 	void Sleep(int32 milliseconds);
 	void ResetTimer();

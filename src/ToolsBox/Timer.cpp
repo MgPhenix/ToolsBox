@@ -2,24 +2,24 @@
 #include <chrono>
 #include <thread>
 
-float64 Timer::End()
+float32 Timer::End()
 {
     m_end = GetCurrentTime();
     return m_end;
 }
 
-float64 Timer::Start()
+float32 Timer::Start()
 {
     m_start = GetCurrentTime();
     return m_start;
 }
 
-float64 Timer::GetCurrentTime()
+float32 Timer::GetCurrentTime()
 {
     auto now = std::chrono::steady_clock::now();
     auto ms  = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch());
 
-    return static_cast<float64>(ms.count());
+    return static_cast<float32>(ms.count());
 }
 
 void Timer::Sleep(int32 milliseconds)

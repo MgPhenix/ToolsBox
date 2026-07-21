@@ -17,8 +17,8 @@
 #define LOG_DEBUG( message )	Logfile::GetInstance().LOG(Severity::DEBUG,    message);
 
 #else
-#define DEBUG_ASSERT( condition );
-#define LOG_DEBUG( message );
+#define DEBUG_ASSERT( condition ) {}
+#define LOG_DEBUG( message ) {}
 #endif 
 
 #define ASSERT( condition ) if ( condition == false ) throw;
