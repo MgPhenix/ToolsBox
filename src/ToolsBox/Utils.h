@@ -3,6 +3,18 @@
 #include <vector>
 #include "PrimitiveTypes.h"
 
+using ID = uint64;
+namespace UUID
+{
+	/**
+	* @brief Get a unique ID 
+	* 
+	* - Warning : will be reset when the program stop 
+	* @return ID(uint64) : unique id
+	*/
+	ID Generate();
+}
+
 enum class Severity
 {
 	DEBUG,
@@ -12,29 +24,59 @@ enum class Severity
 	CRITICAL
 };
 
-
+/**
+* @brief Convert enum class Severity to string
+* @return string : string format of Severity
+*/
 std::string SevertityToString(Severity severity);
-
-/*Return the hash of a string using FNV_1A*/
+/**
+ * @brief Hash a string
+ * @param string 
+ * @return uint64 : the hash of a string using FNV_1A
+ */
 uint64 HashFNV_1A(const std::string& str);
-
-/*When you provide a path with an extension like "C:/folder/file.txt" it will return .txt
-- If your path doesn't have an extension it will just return the path*/
+/**
+ * @brief When you provide a path with an extension like "C:/folder/file.txt" it will return ".txt"
+ * 
+ * If your path doesn't have an extension it will just return the path
+ * 
+ * @param string : path
+ * @return string : only the extension if one is present
+ */
 std::string GetPathExtension(const std::string& path);
 // When you provide a path like "C:/folder/file.txt" it will return "file"
+/**
+ * @brief When you provide a path like "C:/folder/file.txt" it will return "file"
+ * @param string : path
+ * @return string : the name of the file without the path
+ */
 std::string GetPathName(const std::string& path);
-
-//Return time in the format hours:minutes:seconds
+/**
+ * @brief Get the local time of your computer 
+ * @return string : time in the format hours:minutes:seconds
+ */
 std::string GetLocalTime();
-
-
+/**
+* @brief Get a random number using c++ random lib
+* @param int32 : minimum value
+* @param int32 : maximum value
+* @return int32 : a random number between minimum and maximum
+*/
+int32 GetRandomNumber(int32 min, int32 max);
+/**
+* @brief Clamp a T value between two other 
+* @tparam T value you want to clamp 
+* @tparam T minimum value
+* @tparam T maximum value
+* @return T value after beeing clamp
+*/
 template<typename T>
 T Clamp(T val, T min, T max);
-
-
-int32 GetRandomNumber(int32 min, int32 max);
-
-//Return a random value from a vector
+/**
+* @brief Get a random element from a vector
+* @tparam vector<T> : the vector you want to get a value from
+* @return T : A random element from the vector you provided
+*/
 template<typename T>
 T GetRandomValue(const std::vector<T>& vector);
 

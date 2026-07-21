@@ -1,6 +1,14 @@
 #include "Utils.h"
 #include <random>
 
+namespace UUID
+{
+	ID Generate()
+	{
+		static std::atomic<ID> m_nextID = 1;
+		return m_nextID++;
+	}
+}
 
 std::string SevertityToString(Severity severity)
 {

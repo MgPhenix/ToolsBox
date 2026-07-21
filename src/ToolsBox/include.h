@@ -18,7 +18,7 @@
 
 #else
 #define DEBUG_ASSERT( condition );
-#define LOG_DEBUG( message )
+#define LOG_DEBUG( message );
 #endif 
 
 #define ASSERT( condition ) if ( condition == false ) throw;
