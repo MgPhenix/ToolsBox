@@ -8,6 +8,7 @@ struct Task
 {
 	Timer		timer;
 	std::string name;
+	float32		start;
 };
 
 
@@ -23,4 +24,3 @@ public:
 	static void EndTask(std::string id);
 	static float32 GetTask(std::string id);
 };
-

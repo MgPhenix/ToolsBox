@@ -7,7 +7,7 @@ void Profiler::NewTask(std::string id, std::string name)
 	if (it == m_tasks.end())
 	{
 		it->second.name = name;
-		it->second.timer.Start();
+		it->second.start = it->second.timer.Start();
 	}
 }
 
@@ -18,4 +18,16 @@ void Profiler::EndTask(std::string id)
 		return;
 
 	it->second.timer.End();
+}
+
+float32 Profiler::GetTask(std::string id)
+{
+#ifdef CPP_20
+	if(!m_tasks.contains(id))
+#else
+	if (!m_tasks.count(id))
+#endif
+		return 0.f;
+
+	return m_tasks[id].timer.GetTime();
 }

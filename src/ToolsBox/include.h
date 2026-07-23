@@ -47,6 +47,10 @@
 */
 #define OPEN_FILE( path )       Logfile::GetInstance().OpenFile(path);
 /**
+* @brief Close a file if one is open
+*/
+#define CLOSE_FILE				Logfile::GetInstance().CloseFile();
+/**
 * @brief Print and save an Info log (File must be open with OPEN_FILE( FILE )
 */
 #define LOG_INFO( message )		Logfile::GetInstance().LOG(Severity::INFO,     message);

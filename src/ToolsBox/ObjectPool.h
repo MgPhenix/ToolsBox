@@ -12,7 +12,7 @@ class ObjectPool
 {
 private:
 
-	std::vector<T> m_objectPool;
+	std::vector<T>	  m_objectPool;
 	std::vector<bool> m_active;
 
 public:
@@ -72,4 +72,3 @@ public:
 		m_active[index] = false;
 	}
 };
-

@@ -2,15 +2,19 @@
 #include <chrono>
 #include <thread>
 
-float32 Timer::End()
+void Timer::End()
 {
     m_end = GetCurrentTime();
-    return m_end;
 }
 
 float32 Timer::GetTime()
 {
     return GetCurrentTime() - m_start;
+}
+
+float32 Timer::GetEnd()
+{
+    return m_end;
 }
 
 float32 Timer::Start()
