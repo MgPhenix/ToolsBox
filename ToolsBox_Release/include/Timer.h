@@ -15,7 +15,7 @@ public:
 	~Timer() = default;
 
 	float32 Start();
-	void End();
+	float32 End();
 	float32 GetTime();
 	float32 GetEnd();
 

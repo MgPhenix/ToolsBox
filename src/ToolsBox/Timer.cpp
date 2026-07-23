@@ -2,9 +2,10 @@
 #include <chrono>
 #include <thread>
 
-void Timer::End()
+float32 Timer::End()
 {
     m_end = GetCurrentTime();
+    return m_end;
 }
 
 float32 Timer::GetTime()

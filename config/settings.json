@@ -1,5 +1,28 @@
 {
     "projects": {
+        "248342E4-7A1E-734B-6966-679F7B0B4771": {
+            "config-debug": {
+                "additionalDependencies": [],
+                "additionalIncludeDirectories": [],
+                "additionalLibraryDirectories": [],
+                "preprocessorDefinitions": []
+            },
+            "config-release": {
+                "additionalDependencies": [],
+                "additionalIncludeDirectories": [],
+                "additionalLibraryDirectories": [],
+                "preprocessorDefinitions": []
+            },
+            "dependencies": [
+                "41064D5B-646E-5A2E-3A71-3DD14D2800F0"
+            ],
+            "dependents": [],
+            "name": "Examples",
+            "property-lib": false,
+            "property-pch": false,
+            "property-vcpkg": false,
+            "property-window": false
+        },
         "41064D5B-646E-5A2E-3A71-3DD14D2800F0": {
             "config-debug": {
                 "additionalDependencies": [],
@@ -14,7 +37,10 @@
                 "preprocessorDefinitions": []
             },
             "dependencies": [],
-            "dependents": ["5E477FF5-7E49-0565-2539-33F654030A3D"],
+            "dependents": [
+                "5E477FF5-7E49-0565-2539-33F654030A3D",
+                "248342E4-7A1E-734B-6966-679F7B0B4771"
+            ],
             "name": "ToolsBox",
             "property-lib": true,
             "property-pch": false,
@@ -34,7 +60,9 @@
                 "additionalLibraryDirectories": [],
                 "preprocessorDefinitions": []
             },
-            "dependencies": ["41064D5B-646E-5A2E-3A71-3DD14D2800F0"],
+            "dependencies": [
+                "41064D5B-646E-5A2E-3A71-3DD14D2800F0"
+            ],
             "dependents": [],
             "name": "Test",
             "property-lib": false,
@@ -44,6 +72,7 @@
         }
     },
     "projects_name_to_guid": {
+        "Examples": "248342E4-7A1E-734B-6966-679F7B0B4771",
         "Test": "5E477FF5-7E49-0565-2539-33F654030A3D",
         "ToolsBox": "41064D5B-646E-5A2E-3A71-3DD14D2800F0"
     },

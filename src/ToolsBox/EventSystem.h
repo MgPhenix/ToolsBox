@@ -113,7 +113,7 @@ public:
 	* @param string emiter : the event you want to emit
 	* @param EventData(any) : parameter that all function will take can be anything (only available with c++ 17+)
 	*/
-	void Emit(const std::string& emiter, const EventData& data);
+	void Emit(const std::string& emiter, const EventData& data = 0);
 #else
 	/**
 	* @brief Emit an event, all function that are subscribe to this event will be called
