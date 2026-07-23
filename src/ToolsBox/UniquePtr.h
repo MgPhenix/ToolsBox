@@ -9,7 +9,7 @@ private:
 
 public:
 
-	UniquePtr(T* newPtr = nullptr) :
+	explicit UniquePtr(T* newPtr = nullptr) :
 		ptr(newPtr)
 	{}
 	

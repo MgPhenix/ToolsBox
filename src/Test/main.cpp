@@ -17,47 +17,39 @@ public:
 int score = 0;
 std::mutex mutex_score;
 
-void task1() 
+int task1(int a) 
 {
-	std::lock_guard<std::mutex> lock(mutex_score);
+	//std::lock_guard<std::mutex> lock(mutex_score);
 	std::cout << "Thread 1 is running. ID: " << std::this_thread::get_id() << "\n";
-	score += 10;
+	score += a;
+	return score + 10;
 }
 
-void task2() 
-{
-	std::lock_guard<std::mutex> lock(mutex_score);
-	std::cout << "Thread 2 is running. ID: " << std::this_thread::get_id() << "\n";
-	score += 15;
-}
+//auto task2() -> int
+//{
+//	//std::lock_guard<std::mutex> lock(mutex_score);
+//	std::cout << "Thread 2 is running. ID: " << std::this_thread::get_id() << "\n";
+//	score += 15;
+//}
 
 int main()
 {
-	std::thread t1(task1);
+	//ThreadPool pool(4);
 
-	std::cout << "1 : " << score << std::endl;
+	//auto test = pool.Submit(task1, 10);
 
-	std::thread t2(task2);
+	//std::this_thread::sleep_for(std::chrono::milliseconds(4000));
 
-	std::cout << "t1 ID: " << t1.get_id() << "\n";
-	std::cout << "t2 ID: " << t2.get_id() << "\n";
+	//std::cout << "1 : " << score << std::endl;
 
-	std::cout << "2 : " << score << std::endl;
+	//int score2 = test.get();
 
-	if (t1.joinable()) {
-		t1.join();
-		std::cout << "t1 joined\n";
-	}
+	//std::cout << "1 : " << score << std::endl;
+	//std::cout << "2 : " << score2 << std::endl;
 
-	std::cout << "3 : " << score << std::endl;
+	/*std::cout << "3 : " << score << std::endl;
 
-	if (t2.joinable()) {
-		t2.join();
-		std::cout << "t2 joined\n";
-	}
-
-	std::cout << "4 : " << score << std::endl;
-
+	std::cout << "4 : " << score << std::endl;*/
 
 
 	//std::this_thread::sleep_for(std::chrono::milliseconds(10));

@@ -16,6 +16,7 @@ public:
 
 	float32 Start();
 	float32 End();
+	float32 GetTime();
 
 	float32 GetCurrentTime();
 

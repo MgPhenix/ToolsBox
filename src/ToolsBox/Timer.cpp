@@ -8,6 +8,11 @@ float32 Timer::End()
     return m_end;
 }
 
+float32 Timer::GetTime()
+{
+    return GetCurrentTime() - m_start;
+}
+
 float32 Timer::Start()
 {
     m_start = GetCurrentTime();

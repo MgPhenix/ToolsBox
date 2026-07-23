@@ -23,7 +23,7 @@ private:
 
 public:
 
-	SharedPtr(T* newPtr = nullptr) :
+	explicit SharedPtr(T* newPtr = nullptr) :
 		ptr(newPtr),
 		refcount(new int32(ptr ? 1 : 0))
 	{
