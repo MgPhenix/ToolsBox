@@ -1,3 +1,13 @@
+/**
+* @file PrimitiveTypes.h
+* @brief Simple definition of multiple type that are more "readable" than the official
+*
+* @version 0.1
+* @date 2026-07-04
+*
+* @copyright idk bro
+* @author MgPhenix (https://github.com/MgPhenix)
+*/
 #pragma once
 
 using byte = unsigned char;

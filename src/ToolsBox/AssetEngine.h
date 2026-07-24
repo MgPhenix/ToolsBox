@@ -1,7 +1,13 @@
-/*
-WORK IN PROGRESS
+/**
+* @file AssetEngine.h
+* @brief A modular AssetEngine, but not finished yet so unuseable for now
+*
+* @version 0.1
+* @date 2026-07-04
+*
+* @copyright idk bro
+* @author MgPhenix (https://github.com/MgPhenix)
 */
-
 #pragma once
 #include <unordered_map>
 #include <vector>

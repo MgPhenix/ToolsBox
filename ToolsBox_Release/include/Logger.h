@@ -1,3 +1,13 @@
+/**
+* @file Logger.h
+* @brief Save & Manager log, don't use directlty instead use macro LOG_XXX(message) lile LOG_INFO(message)
+*
+* @version 0.1
+* @date 2026-07-04
+*
+* @copyright idk bro
+* @author MgPhenix (https://github.com/MgPhenix)
+*/
 #pragma once
 #include <iostream>
 #include <fstream>
@@ -38,6 +48,9 @@ public:
 	*/
 	static Logfile& GetInstance();
 
+	/*
+	* @return boolean, true if file is open, false is not
+	*/
 	bool IsFileOpen();
 
 	/**

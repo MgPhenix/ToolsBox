@@ -1,3 +1,13 @@
+/**
+* @file EventSystem.h
+* @brief An EventSystem but i will redo it later cause i don't like std::any
+*
+* @version 0.1
+* @date 2026-07-04
+*
+* @copyright idk bro
+* @author MgPhenix (https://github.com/MgPhenix)
+*/
 #pragma once
 #include "PrimitiveTypes.h"
 #include "Config.h"

@@ -1,3 +1,13 @@
+/**
+* @file Timer.h
+* @brief Timer using std::chrono but will maybe use windows clock later
+*
+* @version 0.1
+* @date 2026-07-04
+*
+* @copyright idk bro
+* @author MgPhenix (https://github.com/MgPhenix)
+*/
 #pragma once
 #include "PrimitiveTypes.h"
 

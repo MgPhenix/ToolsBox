@@ -4,5 +4,7 @@
 int main()
 {
 
+	std::packaged_task
+
 	return 0;
 }

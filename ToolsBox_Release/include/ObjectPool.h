@@ -40,7 +40,7 @@ public:
 
 	/**
 	* @brief Get a list of inactive object from the pool
-	* @return veoctor of T* Object that you can use, never delete any of them or you will break the pool
+	* @return vector of T* Object that you can use, never delete any of them or you will break the pool
 	*/
 	std::vector<T*> GetInactivesObjects(int32 nbr)
 	{

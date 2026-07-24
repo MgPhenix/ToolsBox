@@ -1,3 +1,13 @@
+/**
+* @file ThreadPool.h
+* @brief Multithreading tool using a ThreadPool for manage thread that execute task
+*
+* @version 0.1
+* @date 2026-07-04
+*
+* @copyright idk bro
+* @author MgPhenix (https://github.com/MgPhenix)
+*/
 #pragma once
 #include <thread>
 #include <mutex>
@@ -8,7 +18,7 @@
 #include <functional>
 #include <condition_variable>
 
-/*
+/**
 * @brief A Thread pool that stock inactive thread you can use for your task
 */
 class ThreadPool
