@@ -141,4 +141,11 @@ public:
 	*@brief Clear all listener from all emiter that exists
 	*/
 	void ClearAll	();
+
+	template<typename F, typename... Args>
+	void SubscribeTest(std::string emiter, F&& func, Args&&... args)
+	{
+
+	}
+
 };
