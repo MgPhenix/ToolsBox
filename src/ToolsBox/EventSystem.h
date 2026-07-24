@@ -46,7 +46,7 @@ using ListenerID = uint32;
 #endif
 
 
-/*
+/**
 * @brief An EventSystem where you can subscribe a listener to an event, the listener will be called when the event will be called
 * @brief If you use c++ >=17 you have access to EventData(any) who can stock a context for the listener
 */
@@ -54,6 +54,9 @@ class EventSystem
 {
 private:
 
+	/**
+	* @brief Struct that stock information from the listener like function to execute or the id
+	*/
 	struct Listener
 	{
 		ListenerID m_id;

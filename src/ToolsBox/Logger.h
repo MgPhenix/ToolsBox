@@ -32,7 +32,7 @@ struct Log
 };
 
 /**
-* @brief LogSystem, write in a file all log that are provided with the function LOG_XXX(message) 
+* @brief LogSystem, write in a file all log that are provided with the function LOG_XXX(message) like LOG_INFO(message)
 * @brief Before using it open the file with OpenFile(path)
 * @brief -Use .log file for better understanding but it's optional
 */

@@ -11,7 +11,9 @@
 #pragma once
 #include "PrimitiveTypes.h"
 
-
+/**
+* @brief Timer who do timer thing like manage timer cause this is a timer
+*/
 class Timer
 {
 private:
