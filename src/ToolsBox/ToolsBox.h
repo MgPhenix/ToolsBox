@@ -22,6 +22,7 @@
 #include "Logger.h"
 #include "ThreadPool.h"
 #include "ScopeProfiler.h"
+#include "Traits.h"
 
 #ifdef _DEBUG
 /**
