@@ -21,15 +21,17 @@
 
 using ListenerID = uint32;
 
+template<typename T>
+using Result = std::unordered_map<ListenerID, T>;
 
 /**
 * @brief Struct that stock information from the listener like function to execute or the id
 */
-template<typename... Args>
+template<typename R, typename... Args>
 struct ListenerV2
 {
 	ListenerID					 id;
-	std::function<void(Args...)> func;
+	std::function<R(Args...)> func;
 };
 
 class IDispatcher
@@ -45,7 +47,7 @@ class DispatcherV2 : public IDispatcher
 {
 private:
 
-	std::vector<ListenerV2<Args...>> m_listeners;
+	std::vector<ListenerV2<R, Args...>> m_listeners;
 
 public:
 
@@ -55,11 +57,32 @@ public:
 	}
 
 
-	void Callback(Args&&... args)
-	{
-		for (auto& listener : m_listeners)
+	auto Callback(Args&&... args)
+	{	
+		if constexpr (is_same<R, void>::value)
 		{
-			listener.func(args...);
+			for (auto& listener : m_listeners)
+				listener.func(args...);
+			//if (is_same<R, void>::value)
+			//{
+			//	for (auto& listener : m_listeners)
+			//		listener.func(args...);
+
+			//	return;
+			//	//return std::unordered_map<ListenerID, R>();
+			//}
+		}
+		else
+		{
+			std::unordered_map<ListenerID, R> return_map;
+
+
+			for (auto& listener : m_listeners)
+			{
+				return_map[listener.id] = listener.func(args...);
+			}
+
+			return return_map;
 		}
 	}
 
@@ -68,7 +91,7 @@ public:
 		m_listeners.erase(std::remove_if(
 			m_listeners.begin(),
 			m_listeners.end(),
-			[id](const ListenerV2<Args...>& l) { return l.id == id; }),
+			[id](const ListenerV2<R, Args...>& l) { return l.id == id; }),
 			m_listeners.end()
 		);
 	}
@@ -161,6 +184,7 @@ public:
 	{
 		ListenerID id = m_nextID++;
 		using Sig = typename lambda_function_traits<std::decay_t<F>>::signature;
+		using R	  = typename lambda_function_traits<std::decay_t<F>>::return_type;
 
 		IDispatcher* dispatcher = nullptr;
 
@@ -174,8 +198,17 @@ public:
 		m_dispatcher[emiter] = func_args<Sig>::AddFunc(Sig(
 			[emiter, id, this, function = std::forward<F>(func)](auto&&... args)
 			{
-				function(std::forward<decltype(args)>(args)...);
-				Unsubscribe(emiter, id);
+				if constexpr (is_same<R, void>::value)
+				{
+					function(std::forward<decltype(args)>(args)...);
+					Unsubscribe(emiter, id);
+				}
+				else
+				{
+					auto result = function(std::forward<decltype(args)>(args)...);
+					Unsubscribe(emiter, id);
+					return result;
+				}
 			}
 		), dispatcher, id);
 		return id;
@@ -203,13 +236,37 @@ public:
 	* @param string emiter : the event you want to emit
 	* @tparam Args... args : parameter that all function will take, can be anything
 	*/
-	template<typename... Args>
-	void Emit(const std::string& emiter, Args... args)
-	{
-		if (!m_dispatcher.contains(emiter))
-			return;
 
-		static_cast<DispatcherV2<void, Args...>*>(m_dispatcher[emiter])->Callback(std::forward<Args>(args)...);
+	template<typename R = void, typename... Args>
+	auto Emit(const std::string& emiter, Args... args)
+	{
+		if constexpr (is_same<R, void>::value)
+		{
+#ifdef CPP_20
+			if (!m_dispatcher.contains(emiter))
+#else
+			if (!m_dispatcher.count(emiter))
+#endif
+				return;
+
+			DispatcherV2<R, Args...>* dispatcher = static_cast<DispatcherV2<R, Args...>*>(m_dispatcher[emiter]);
+
+			dispatcher->Callback(std::forward<Args>(args)...);
+			return;
+		}
+		else
+		{
+#ifdef CPP_20
+			if (!m_dispatcher.contains(emiter))
+#else
+			if (!m_dispatcher.count(emiter))
+#endif
+				return std::unordered_map<ListenerID, R>();
+
+			DispatcherV2<R, Args...>* dispatcher = static_cast<DispatcherV2<R, Args...>*>(m_dispatcher[emiter]);
+
+			return dispatcher->Callback(std::forward<Args>(args)...);
+		}
 	}
 
 	/**
