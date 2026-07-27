@@ -59,10 +59,14 @@ template<typename R, typename C, typename... Args>
 struct lambda_function_traits<R(C::*)(Args...) const>
 {
 	using signature = std::function<R(Args...)>;
+	using return_type = R;
+	using args_tuple = std::tuple<Args...>;
 };
 
 template<typename R, typename C, typename... Args>
 struct lambda_function_traits<R(C::*)(Args...)>
 {
 	using signature = std::function<R(Args...)>;
+	using return_type = R;
+	using args_tuple = std::tuple<Args...>;
 };
