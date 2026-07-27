@@ -15,10 +15,15 @@
 #define CPP_VERSION __cplusplus
 #endif
 
+
+#if CPP_VERSION >= 202002L
+#define CPP_20
+#endif
+
 #if CPP_VERSION >= 201703L
 #define CPP_17
 #endif
 
-#if CPP_VERSION >= 202002L
-#define CPP_20
+#if CPP_VERSION >= 201402L
+#define CPP_14
 #endif
