@@ -19,8 +19,13 @@
 
 //#ifdef CPP_14
 
+/**
+* @brief ID for the listener
+*/
 using ListenerID = uint32;
-
+/**
+* @brief Result Type is just an extended version of an unordered map
+*/
 template<typename T>
 using Result = std::unordered_map<ListenerID, T>;
 
@@ -33,7 +38,9 @@ struct ListenerV2
 	ListenerID					 id;
 	std::function<R(Args...)> func;
 };
-
+/**
+* @brief Interface for Dispatcher
+*/
 class IDispatcher
 {
 public:
@@ -41,7 +48,11 @@ public:
 
 	virtual void DeleteOne(ListenerID id) {};
 };
-
+/**
+* @brief Dispatcher is used for dispatch function depending on there type
+* @tparam R : Return Type of the function
+* @tparam Args... : Different argument functions will take
+*/
 template<typename R, typename... Args>
 class DispatcherV2 : public IDispatcher
 {
@@ -51,41 +62,40 @@ private:
 
 public:
 
+	/**
+	* @brief Add function in the list of listeners, stock the id as well
+	* @param ListenerID id : id of the listener
+	* @tparam std::function<R(Args...)> func : function that will be execute when listener will be called
+	*/
 	void Add(std::function<R(Args...)> func, ListenerID id)
 	{
 		m_listeners.push_back({ id, std::move(func) });
 	}
-
-
+	/**
+	* @brief Call all the functions of the listener list 
+	* @tparam Args... args : Argument all functions will take when execute
+	*/
 	auto Callback(Args&&... args)
 	{	
 		if constexpr (is_same<R, void>::value)
 		{
 			for (auto& listener : m_listeners)
 				listener.func(args...);
-			//if (is_same<R, void>::value)
-			//{
-			//	for (auto& listener : m_listeners)
-			//		listener.func(args...);
-
-			//	return;
-			//	//return std::unordered_map<ListenerID, R>();
-			//}
 		}
 		else
 		{
 			std::unordered_map<ListenerID, R> return_map;
 
-
 			for (auto& listener : m_listeners)
-			{
 				return_map[listener.id] = listener.func(args...);
-			}
 
 			return return_map;
 		}
 	}
-
+	/**
+	* @brief Delete One of the listener
+	* @param ListenerID id : id of the listener to erase
+	*/
 	void DeleteOne(ListenerID id) override
 	{
 		m_listeners.erase(std::remove_if(
@@ -102,7 +112,6 @@ public:
 	}
 
 };
-
 
 template<typename T>
 struct func_args;
