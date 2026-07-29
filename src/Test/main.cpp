@@ -3,6 +3,17 @@
 #include <functional>
 #include <unordered_map>
 
+#undef begin
+#undef end
+
+class VectorException : std::runtime_error
+{
+public:
+	VectorException(const std::string& message) :
+		std::runtime_error(message)
+	{ }
+};
+
 template<typename T>
 struct MyAllocator
 {
@@ -66,13 +77,44 @@ public:
 		new (&memory[size]) T(std::move_if_noexcept(val));
 		size++;
 	};
+	
+	template<typename... Args>
+	void emplace_back(Args&&... args)
+	{
+		if (size == capacity)
+		{
+			T* new_memory = allocator.allocate(capacity * 2);
+			for (size_t i = 0; i < size; i++)
+			{
+				new (&new_memory[i]) T(std::move_if_noexcept(memory[i]));
+				memory[i].~T();
+			}
+
+			allocator.deallocate(memory, capacity);
+			memory = new_memory;
+			capacity *= 2;
+		}
+
+		new (&memory[size]) T(std::forward<Args>(args)...);
+		size++;
+	}
+
+	void pop_back()
+	{
+		ASSERT(size != 0);
+		memory[size-1].~T();
+		size--;
+	}
 
 	size_t capacity_()  { return capacity; };
 	size_t size_()		{ return size; };
 
+	T* begin() { return memory; };
+	T* end() { return memory + size; };
+
 	T& operator[](size_t position)
 	{
-		ASSERT(position <= size);
+		ASSERT(position < size);
 
 		return memory[position];
 	}
@@ -83,6 +125,67 @@ public:
 			memory[i].~T();
 
 		allocator.deallocate(memory, capacity);
+	}
+
+	MyVector(const MyVector& other) :
+		allocator(other.allocator),
+		capacity(other.capacity),
+		size(other.size)
+	{
+		memory = allocator.allocate(capacity);
+		for (size_t i = 0; i < other.size; i++)
+			new (&memory[i]) T(other.memory[i]);
+	}
+
+	MyVector(MyVector&& other) :
+		allocator(other.allocator),
+		capacity(other.capacity), 
+		memory(other.memory),
+		size(other.size)
+	{
+		other.memory   = nullptr;
+		other.size	   = 0;
+		other.capacity = 0;
+	}
+
+	MyVector& operator=(MyVector&& other)
+	{
+		if (this == &other) return *this;
+		
+		for (size_t i = 0; i < size; i++)
+			memory[i].~T();
+
+		allocator.deallocate(memory, capacity);
+
+		capacity = other.capacity;
+		size = other.size;
+		
+		memory = other.memory;
+		
+		other.memory   = nullptr;
+		other.capacity = 0;
+		other.size	   = 0;
+		
+		return *this;
+	}
+
+	MyVector& operator=(const MyVector& other)
+	{
+		if (this == &other) return *this;
+
+		for (size_t i = 0; i < size; i++)
+			memory[i].~T();
+
+		allocator.deallocate(memory, capacity);
+
+		capacity = other.capacity;
+		size	 = other.size;
+
+		memory = allocator.allocate(capacity);
+		for (size_t i = 0; i < size; i++)
+			new (&memory[i]) T(other.memory[i]);
+
+		return *this;
 	}
 };
 
@@ -99,20 +202,29 @@ struct Node { int key; float value; };
 
 int main()
 {
-	MyAllocator<float> alloc;
-
-	using ReboundAllocType = MyAllocator<float>::rebind<Node>::other;
-	ReboundAllocType allocNode;
-
-	Node* n = allocNode.allocate(1);
-	new (n) Node{ 42, 3.14f };
-
-	std::cout << "Key : " << n->key << " | Value : " << n->value << std::endl;
-	n->~Node();
-	allocNode.deallocate(n, 1);
-	return 0;
 }
 
+
+
+
+
+
+
+
+
+
+//MyAllocator<float> alloc;
+
+//using ReboundAllocType = MyAllocator<float>::rebind<Node>::other;
+//ReboundAllocType allocNode;
+
+//Node* n = allocNode.allocate(1);
+//new (n) Node{ 42, 3.14f };
+
+//std::cout << "Key : " << n->key << " | Value : " << n->value << std::endl;
+//n->~Node();
+//allocNode.deallocate(n, 1);
+//return 0;
 
 
 //int main()
