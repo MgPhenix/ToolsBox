@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+	<Type Name="MyVector&lt;*&gt;">
+		<DisplayString>Size = {size}</DisplayString>
+
+		<Expand>
+			<Item Name="[capacity]">capacity</Item>
+			<ArrayItems>
+				<Size>size</Size>
+				<ValuePointer>memory</ValuePointer>
+			</ArrayItems>
+		</Expand>
+
+	</Type>
+</AutoVisualizer>

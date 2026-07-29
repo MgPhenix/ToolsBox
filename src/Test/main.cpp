@@ -202,6 +202,18 @@ struct Node { int key; float value; };
 
 int main()
 {
+	MyVector<int> vec;
+	std::vector<int> vec2;
+	vec.push_back(0);
+	vec.push_back(0);
+	vec.push_back(0);
+	vec.push_back(0);
+	vec.push_back(0);
+
+	vec2.push_back(2);
+	vec2.push_back(2);
+	vec2.push_back(2);
+	vec2.push_back(2);
 }
 
 
