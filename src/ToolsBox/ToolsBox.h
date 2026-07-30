@@ -24,6 +24,7 @@
 #include "ScopeProfiler.h"
 #include "Traits.h"
 #include "EventSystemV2.h"
+#include "vector_l.h"
 
 #ifdef _DEBUG
 /**

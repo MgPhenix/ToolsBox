@@ -3,217 +3,76 @@
 #include <functional>
 #include <unordered_map>
 
-#undef begin
-#undef end
-
-class VectorException : std::runtime_error
+template<typename K, typename V>
+struct Node
 {
-public:
-	VectorException(const std::string& message) :
-		std::runtime_error(message)
-	{ }
+	K key;
+	V value;
+	Node* next;
 };
 
-template<typename T>
-struct MyAllocator
-{
-	using value_type = T;
 
-	MyAllocator() = default;
-
-	T* allocate(size_t size)
-	{
-		std::cout << "Allocate(" << size << ")" << std::endl;
-		return static_cast<T*>(::operator new(size * sizeof(T)));
-	}
-
-	void deallocate(T* ptr, size_t size)
-	{
-		std::cout << "Deallocate(" << size << ")" << std::endl;
-		::operator delete(ptr, size * sizeof(T));
-	}
-
-	template<typename U>
-	struct rebind
-	{
-		using other = MyAllocator<U>;
-	};
-};
-
-template<typename T, typename Allocator = MyAllocator<T>>
-class MyVector
+template<typename K, typename V, typename Allocator = MyAllocator<Node<K, V>>>
+class MyUnorderedMap
 {
 private:
-
-	Allocator allocator;
-	T* memory;
-
-	size_t size		= 0;
-	size_t capacity = 1;
+	
+	std::vector<Node<K, V>*> buckets;
+	Allocator			  allocator;
+	size_t				  bucket_count = 8;
 
 public:
-
-	MyVector()
-	{
-		memory = allocator.allocate(1);
-	}
-
-	void push_back(T&& val)
-	{
-		if (size == capacity)
-		{
-			T* new_memory = allocator.allocate(capacity * 2);
-			for (size_t i = 0; i < size; i++)
-			{
-				new (&new_memory[i]) T(std::move_if_noexcept(memory[i]));
-				memory[i].~T();
-			}
-
-			allocator.deallocate(memory, capacity);
-			memory = new_memory;
-			capacity *= 2;
-		}
-
-		new (&memory[size]) T(std::move_if_noexcept(val));
-		size++;
-	};
 	
-	template<typename... Args>
-	void emplace_back(Args&&... args)
+	MyUnorderedMap() : 
+		buckets(8, nullptr) 
 	{
-		if (size == capacity)
-		{
-			T* new_memory = allocator.allocate(capacity * 2);
-			for (size_t i = 0; i < size; i++)
-			{
-				new (&new_memory[i]) T(std::move_if_noexcept(memory[i]));
-				memory[i].~T();
-			}
+	}
 
-			allocator.deallocate(memory, capacity);
-			memory = new_memory;
-			capacity *= 2;
+	void TempAdd(Node<K, V>* truc) 
+	{ 
+		buckets[std::hash<K>{}(truc->key) % 8] = truc;
+	}
+
+	V* find(const K& key)
+	{
+		size_t index = std::hash<K>{}(key) % bucket_count;
+		Node<K, V>* current = buckets[index];
+
+		while (current != nullptr)
+		{
+			if (current->key == key)
+				return &current->value;
+			current = current->next;
 		}
 
-		new (&memory[size]) T(std::forward<Args>(args)...);
-		size++;
+		return nullptr;
 	}
 
-	void pop_back()
+	V* operator[](const K& key)
 	{
-		ASSERT(size != 0);
-		memory[size-1].~T();
-		size--;
-	}
+		size_t index = std::hash<K>{}(key) % bucket_count;
+		Node<K, V>* current = buckets[index];
 
-	size_t capacity_()  { return capacity; };
-	size_t size_()		{ return size; };
+		while (current != nullptr)
+		{
+			if (current->key == key)
+				return &current->value;
+			current = current->next;
+		}
 
-	T* begin() { return memory; };
-	T* end() { return memory + size; };
-
-	T& operator[](size_t position)
-	{
-		ASSERT(position < size);
-
-		return memory[position];
-	}
-
-	~MyVector()
-	{
-		for (size_t i = 0; i < size; i++)
-			memory[i].~T();
-
-		allocator.deallocate(memory, capacity);
-	}
-
-	MyVector(const MyVector& other) :
-		allocator(other.allocator),
-		capacity(other.capacity),
-		size(other.size)
-	{
-		memory = allocator.allocate(capacity);
-		for (size_t i = 0; i < other.size; i++)
-			new (&memory[i]) T(other.memory[i]);
-	}
-
-	MyVector(MyVector&& other) :
-		allocator(other.allocator),
-		capacity(other.capacity), 
-		memory(other.memory),
-		size(other.size)
-	{
-		other.memory   = nullptr;
-		other.size	   = 0;
-		other.capacity = 0;
-	}
-
-	MyVector& operator=(MyVector&& other)
-	{
-		if (this == &other) return *this;
-		
-		for (size_t i = 0; i < size; i++)
-			memory[i].~T();
-
-		allocator.deallocate(memory, capacity);
-
-		capacity = other.capacity;
-		size = other.size;
-		
-		memory = other.memory;
-		
-		other.memory   = nullptr;
-		other.capacity = 0;
-		other.size	   = 0;
-		
-		return *this;
-	}
-
-	MyVector& operator=(const MyVector& other)
-	{
-		if (this == &other) return *this;
-
-		for (size_t i = 0; i < size; i++)
-			memory[i].~T();
-
-		allocator.deallocate(memory, capacity);
-
-		capacity = other.capacity;
-		size	 = other.size;
-
-		memory = allocator.allocate(capacity);
-		for (size_t i = 0; i < size; i++)
-			new (&memory[i]) T(other.memory[i]);
-
-		return *this;
+		return nullptr;
 	}
 };
 
-struct Test
-{
-	int x = 42;
-	Test() { std::cout << "Test constructor" << std::endl; };
-	Test(const Test&) { std::cout << "Test copie" << std::endl; };
-	Test(Test&&) noexcept { std::cout << "Test move" << std::endl; };
-	~Test() { std::cout << "Test destructor" << std::endl; };
-};
 
-struct Node { int key; float value; };
 
 int main()
 {
-	MyVector<int> vec;
-	std::vector<int> vec2;
-	vec.push_back(0);
-	vec.push_back(0);
-	vec.push_back(0);
-	vec.push_back(0);
-	vec.push_back(0);
-
-	vec2.push_back(2);
-	vec2.push_back(2);
-	vec2.push_back(2);
-	vec2.push_back(2);
+	MyUnorderedMap<std::string, int> map;
+	map.TempAdd(new Node<std::string, int>(std::string("test"), 5, nullptr));
+	int* test = map["test"];
+	if(test != nullptr)
+		std::cout << *test << std::endl;
 }
 
 
