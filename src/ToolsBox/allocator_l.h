@@ -19,13 +19,13 @@ struct MyAllocator
 
 	T* allocate(size_t size)
 	{
-		std::cout << "Allocate(" << size << ")" << std::endl;
+		//std::cout << "Allocate(" << size << ")" << std::endl;
 		return static_cast<T*>(::operator new(size * sizeof(T)));
 	}
 
 	void deallocate(T* ptr, size_t size)
 	{
-		std::cout << "Deallocate(" << size << ")" << std::endl;
+		//std::cout << "Deallocate(" << size << ")" << std::endl;
 		::operator delete(ptr, size * sizeof(T));
 	}
 

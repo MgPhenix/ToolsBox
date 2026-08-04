@@ -9,6 +9,11 @@ struct Node
 	K key;
 	V value;
 	Node* next;
+	
+	Node(K k, V v, Node* node) : 
+		key(k),
+		value(v),
+		next(node) {}
 };
 
 
@@ -48,6 +53,21 @@ public:
 		return nullptr;
 	}
 
+	void insert(K& key, V& value)
+	{
+		size_t index = std::hash<K>{}(key) % bucket_count;
+		Node<K, V>* current = buckets[index];
+		
+		if (current == nullptr)
+		{
+			new (&current) Node(key, value, )
+		}
+		else
+		{
+
+		}
+	}
+
 	V* operator[](const K& key)
 	{
 		size_t index = std::hash<K>{}(key) % bucket_count;
@@ -68,11 +88,14 @@ public:
 
 int main()
 {
+
 	MyUnorderedMap<std::string, int> map;
 	map.TempAdd(new Node<std::string, int>(std::string("test"), 5, nullptr));
 	int* test = map["test"];
 	if(test != nullptr)
 		std::cout << *test << std::endl;
+
+	
 }
 
 

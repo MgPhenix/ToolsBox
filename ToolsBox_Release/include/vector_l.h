@@ -27,7 +27,11 @@ private:
 	size_t size = 0;
 	size_t capacity = 1;
 
+	using iterator = T*;
+	using const_iterator = const T*;
+
 public:
+
 
 	vector_l()
 	{
@@ -94,8 +98,156 @@ public:
 	size_t capacity_() { return capacity; };
 	size_t size_() { return size; };
 
-	T* begin() { return memory; };
-	T* end() { return memory + size; };
+	iterator begin() { return memory; };
+	iterator end() { return memory + size; };
+
+	iterator erase(size_t indice)
+	{
+		if (indice >= size)
+			return memory;
+
+		T* new_memory = allocator.allocate(capacity);
+
+		size_t i = 0;
+		size_t j = 0;
+		while (i < size)
+		{
+			if (i == indice)
+				i++;
+
+			new (&new_memory[j]) T(std::move_if_noexcept(memory[i]));
+			memory[i].~T();
+
+			i++;
+			j++;
+		}
+
+		allocator.deallocate(memory, capacity);
+		memory = new_memory;
+		size--;
+		return memory;
+	}
+
+	iterator erase(iterator it)
+	{
+		if (it == end())
+			return memory;
+
+
+		T* new_memory = allocator.allocate(capacity);
+
+		size_t i = 0;
+		size_t j = 0;
+		while (i < size)
+		{
+			if (&memory[i] == it)
+				i++;
+
+			new (&new_memory[j]) T(std::move_if_noexcept(memory[i]));
+			memory[i].~T();
+
+			i++;
+			j++;
+		}
+
+		allocator.deallocate(memory, capacity);
+		memory = new_memory;
+		size--;
+		return memory;
+	}
+
+	void erase_if(std::function<bool(const T&)> func)
+	{
+		T* new_memory = allocator.allocate(capacity);
+
+		size_t i = 0;
+		size_t j = 0;
+		size_t count = 0;
+		while (i < size)
+		{
+			if (func(memory[i]))
+			{
+				memory[i].~T();
+				count++;
+			}
+			else
+			{
+				new (&new_memory[j]) T(std::move_if_noexcept(memory[i]));
+				memory[i].~T();
+				j++;
+			}
+
+			i++;
+		}
+
+		allocator.deallocate(memory, capacity);
+		memory = new_memory;
+		size -= count;
+		return;
+	}
+
+	void erase_move_if(std::function<bool(const T&)> func)
+	{
+		size_t i = 0;
+		size_t count = 0;
+		while (i < size)
+		{
+			if (func(memory[i]))
+			{
+				memory[i].~T();
+				if(i != size-1)
+					new (&memory[i]) T(std::move_if_noexcept(memory[i + 1]));
+				count++;
+			}
+
+			i++;
+		}
+
+		size -= count;
+		return;
+	}
+
+	void erase_move(size_t indice)
+	{
+		if (indice >= size)
+			return;
+
+		size_t i = 0;
+		while (i < size)
+		{	
+			if (i == indice)
+				memory[i].~T();			
+			else if (i > indice)
+				new (&memory[i-1]) T(std::move_if_noexcept(memory[i]));
+
+			i++;
+		}
+		
+		size--;
+	}
+
+	void erase_move(iterator it)
+	{
+		if (it == end())
+			return;
+
+		size_t i = 0;
+		bool passedBy = false;
+		while (i < size)
+		{
+			if (it == &memory[i])
+			{ 	
+				memory[i].~T();
+				passedBy = true;
+			}
+			else if (passedBy)
+				new (&memory[i - 1]) T(std::move_if_noexcept(memory[i]));
+
+			i++;
+		}
+
+		size--;
+	}
 
 	T& operator[](size_t position)
 	{
