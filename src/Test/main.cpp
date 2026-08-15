@@ -28,9 +28,22 @@ private:
 
 public:
 	
-	MyUnorderedMap() : 
-		buckets(8, nullptr) 
+	MyUnorderedMap() : buckets(8, nullptr) {}
+
+	~MyUnorderedMap()
 	{
+		for (auto& bucket : buckets)
+		{
+			Node<K, V>* current = bucket;
+			while (current != nullptr)
+			{
+				Node<K, V>* next = current->next;
+
+				current->~Node();
+				allocator.deallocate(current, 1);
+				current = next;
+			}
+		}
 	}
 
 	void TempAdd(Node<K, V>* truc) 
@@ -53,22 +66,31 @@ public:
 		return nullptr;
 	}
 
-	void insert(K& key, V& value)
+	void insert(K key, V value)
 	{
 		size_t index = std::hash<K>{}(key) % bucket_count;
 		Node<K, V>* current = buckets[index];
-		
-		if (current == nullptr)
-		{
-			new (&current) Node(key, value, )
-		}
-		else
-		{
 
+		if (current != nullptr)
+		{
+			while (current->next != nullptr)
+			{
+				if (current->next->key == key)
+					return;
+				current = current->next;
+			}
 		}
+
+		Node<K,V>* newNode = allocator.allocate(1);
+		new (newNode) Node<K, V>(std::move_if_noexcept(key), std::move_if_noexcept(value), nullptr);
+
+		if(current == nullptr)
+			buckets[index] = newNode;
+		else
+			current->next = newNode;
 	}
 
-	V* operator[](const K& key)
+	V& operator[](const K& key)
 	{
 		size_t index = std::hash<K>{}(key) % bucket_count;
 		Node<K, V>* current = buckets[index];
@@ -76,12 +98,43 @@ public:
 		while (current != nullptr)
 		{
 			if (current->key == key)
-				return &current->value;
+				return current->value;
 			current = current->next;
 		}
-
-		return nullptr;
 	}
+
+	MyUnorderedMap(const MyUnorderedMap& other) :
+		bucket_count(other.bucket_count),
+		buckets(other.bucket_count, nullptr)
+	{
+	//	for (auto& bucket : other.buckets)
+	//	{
+	//		if (bucket == nullptr)
+	//			continue;
+
+	//		Node<K, V>* other_current = bucket;
+
+	//		size_t index = std::hash<K>{}(other_current->key) % other.bucket_count;
+	//		Node<K,V>* current = buckets[index];
+	//		new (buckets[index]) Node<K, V>(other_current);
+
+	//		while (other_current != nullptr)
+	//		{
+	//			Node<K, V>* next = other_current->next;
+	//			new (current->next) Node<K, V>(next);
+	//			other_current = next;
+	//		}
+	//	}
+	}
+
+	MyUnorderedMap(MyUnorderedMap&& other)
+	{
+
+	}
+
+	MyUnorderedMap& operator=(const MyUnorderedMap& other);
+
+	MyUnorderedMap& operator=(MyUnorderedMap&& other);
 };
 
 
@@ -91,11 +144,13 @@ int main()
 
 	MyUnorderedMap<std::string, int> map;
 	map.TempAdd(new Node<std::string, int>(std::string("test"), 5, nullptr));
-	int* test = map["test"];
-	if(test != nullptr)
-		std::cout << *test << std::endl;
+	int test = map["test"];
+	std::cout << test << std::endl;
 
-	
+	std::string truc = "truc";
+	map.insert(truc, 8);
+	int test2 = map["truc"];
+	std::cout << test2 << std::endl;
 }
 
 
