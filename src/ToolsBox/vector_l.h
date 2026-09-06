@@ -95,11 +95,11 @@ public:
 		size--;
 	}
 
-	size_t capacity_() { return capacity; };
-	size_t size_() { return size; };
+	size_t capacity_() const { return capacity; };
+	size_t size_()	   const { return size; };
 
-	iterator begin() { return memory; };
-	iterator end() { return memory + size; };
+	iterator begin() const { return memory; };
+	iterator end()	 const { return memory + size; };
 
 	iterator erase(size_t indice)
 	{
@@ -249,7 +249,7 @@ public:
 		size--;
 	}
 
-	T& operator[](size_t position)
+	T& operator[](size_t position) const
 	{
 		ASSERT(position < size);
 

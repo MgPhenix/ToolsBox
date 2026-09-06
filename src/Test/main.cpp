@@ -3,6 +3,13 @@
 #include <functional>
 #include <unordered_map>
 
+template<typename F, typename S>
+struct Pair
+{
+	F first;
+	S second;
+};
+
 template<typename K, typename V>
 struct Node
 {
@@ -14,6 +21,20 @@ struct Node
 		key(k),
 		value(v),
 		next(node) {}
+
+	Node(const Node& other) :
+		key(other.key),
+		value(other.value),
+		next(other.next)
+	{}
+
+	Node(Node&& other) :
+		key(other.key),
+		value(other.value),
+		next(other.next)
+	{
+		other.next = nullptr;
+	}
 };
 
 
@@ -101,40 +122,135 @@ public:
 				return current->value;
 			current = current->next;
 		}
+
+		std::cout << "Value not found" << std::endl;
 	}
 
 	MyUnorderedMap(const MyUnorderedMap& other) :
 		bucket_count(other.bucket_count),
 		buckets(other.bucket_count, nullptr)
 	{
-	//	for (auto& bucket : other.buckets)
-	//	{
-	//		if (bucket == nullptr)
-	//			continue;
+		for (size_t i = 0; i < other.buckets.size_(); i++)
+		{
+			Node<K, V>* other_current = other.buckets[i];
+			Node<K, V>* last_created = nullptr;
 
-	//		Node<K, V>* other_current = bucket;
+			while (other_current != nullptr)
+			{
+				Node<K, V>* newNode = allocator.allocate(1);
+				new (newNode) Node<K, V>{other_current->key, other_current->value, nullptr};
 
-	//		size_t index = std::hash<K>{}(other_current->key) % other.bucket_count;
-	//		Node<K,V>* current = buckets[index];
-	//		new (buckets[index]) Node<K, V>(other_current);
+				if (last_created == nullptr)
+					buckets[i] = newNode;
+				else
+					last_created->next = newNode;
 
-	//		while (other_current != nullptr)
-	//		{
-	//			Node<K, V>* next = other_current->next;
-	//			new (current->next) Node<K, V>(next);
-	//			other_current = next;
-	//		}
-	//	}
+				last_created = newNode;
+				other_current = other_current->next;
+			}
+		}
 	}
 
-	MyUnorderedMap(MyUnorderedMap&& other)
+	MyUnorderedMap(MyUnorderedMap&& other) :
+		bucket_count(other.bucket_count),
+		buckets(std::move(other.buckets))
 	{
-
+		other.bucket_count = 0;
 	}
 
-	MyUnorderedMap& operator=(const MyUnorderedMap& other);
+	MyUnorderedMap& operator=(const MyUnorderedMap& other)
+	{
+		if (this == &other) return *this;
 
-	MyUnorderedMap& operator=(MyUnorderedMap&& other);
+		for (auto& bucket : buckets)
+		{
+			Node<K, V>* current = bucket;
+			while (current != nullptr)
+			{
+				Node<K, V>* next = current->next;
+
+				current->~Node();
+				allocator.deallocate(current, 1);
+				current = next;
+			}
+		}
+
+		bucket_count = other.bucket_count;
+		buckets = vector_l<Node<K, V>*>(other.bucket_count, nullptr);
+
+		for (size_t i = 0; i < other.buckets.size_(); i++)
+		{
+			Node<K, V>* other_current = other.buckets[i];
+			Node<K, V>* last_created = nullptr;
+
+			while (other_current != nullptr)
+			{
+				Node<K, V>* newNode = allocator.allocate(1);
+				new (newNode) Node<K, V>{other_current->key, other_current->value, nullptr};
+
+				if (last_created == nullptr)
+					buckets[i] = newNode;
+				else
+					last_created->next = newNode;
+
+				last_created = newNode;
+				other_current = other_current->next;
+			}
+		}
+		
+		return *this;
+	}
+
+	MyUnorderedMap& operator=(MyUnorderedMap&& other)
+	{
+		if (this == &other) return *this;
+
+		for (auto& bucket : buckets)
+		{
+			Node<K, V>* current = bucket;
+			while (current != nullptr)
+			{
+				Node<K, V>* next = current->next;
+
+				current->~Node();
+				allocator.deallocate(current, 1);
+				current = next;
+			}
+		}
+
+		bucket_count = other.bucket_count;
+		buckets = std::move(other.buckets);
+
+		other.bucket_count = 0;
+
+		return *this;
+	}
+
+	void erase(const K& key)
+	{
+		size_t index = std::hash<K>{}(key) % bucket_count;
+		Node<K, V>* current = buckets[index];
+		Node<K, V>* previous = buckets[index];
+		
+		while (current != nullptr)
+		{
+			if (current->key == key)
+			{
+				if (current->next != nullptr)
+					previous->next = current->next;
+				else if (previous != current)
+					previous->next = nullptr;
+
+				current->~Node();
+				allocator.deallocate(current, 1);
+				return;
+			}
+
+			previous = current;
+			current = current->next;
+		}
+
+	}
 };
 
 
@@ -147,9 +263,11 @@ int main()
 	int test = map["test"];
 	std::cout << test << std::endl;
 
+	MyUnorderedMap<std::string, int> map2 = map;
 	std::string truc = "truc";
-	map.insert(truc, 8);
-	int test2 = map["truc"];
+	map2.insert(truc, 8);
+	//map2["truc"] = 34;
+	int test2 = map2["truc"];
 	std::cout << test2 << std::endl;
 }
 
