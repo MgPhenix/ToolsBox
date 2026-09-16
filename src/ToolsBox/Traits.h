@@ -80,3 +80,6 @@ struct lambda_function_traits<R(C::*)(Args...)>
 	using return_type = R;
 	using args_tuple = std::tuple<Args...>;
 };
+
+template<typename T>
+concept Arithmetic = std::is_arithmetic_v<T>;

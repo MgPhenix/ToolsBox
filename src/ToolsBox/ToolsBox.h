@@ -25,6 +25,8 @@
 #include "Traits.h"
 #include "EventSystemV2.h"
 #include "vector_l.h"
+#include "Pair.h"
+#include "unordered_map_l.h"
 
 #ifdef _DEBUG
 /**

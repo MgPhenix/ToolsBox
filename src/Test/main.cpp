@@ -3,272 +3,185 @@
 #include <functional>
 #include <unordered_map>
 
-template<typename F, typename S>
-struct Pair
+#include "unordered_map_l.h"
+
+
+template<int columns, int rows, typename T>
+class Matrice
 {
-	F first;
-	S second;
-};
+protected:
 
-template<typename K, typename V>
-struct Node
-{
-	K key;
-	V value;
-	Node* next;
-	
-	Node(K k, V v, Node* node) : 
-		key(k),
-		value(v),
-		next(node) {}
+	T m_value[columns * rows];
 
-	Node(const Node& other) :
-		key(other.key),
-		value(other.value),
-		next(other.next)
-	{}
-
-	Node(Node&& other) :
-		key(other.key),
-		value(other.value),
-		next(other.next)
-	{
-		other.next = nullptr;
-	}
-};
-
-
-template<typename K, typename V, typename Allocator = MyAllocator<Node<K, V>>>
-class MyUnorderedMap
-{
-private:
-	
-	vector_l<Node<K, V>*> buckets;
-	Allocator			  allocator;
-	size_t				  bucket_count = 8;
+	int m_size = 0;
 
 public:
-	
-	MyUnorderedMap() : buckets(8, nullptr) {}
 
-	~MyUnorderedMap()
+	int GetIndice(int column, int row) { return row * columns + column; };
+
+	T* GetData() { return m_value; };
+
+	T& GetValue(int column, int row)
 	{
-		for (auto& bucket : buckets)
-		{
-			Node<K, V>* current = bucket;
-			while (current != nullptr)
-			{
-				Node<K, V>* next = current->next;
+		ASSERT((column > columns - 1 || column < 0 || row < 0 || row > rows - 1) == false);
 
-				current->~Node();
-				allocator.deallocate(current, 1);
-				current = next;
-			}
-		}
+		return m_value[GetIndice(column, row)];
+	};
+
+	void SetValue(int column, int row, T value)
+	{
+		ASSERT((column > columns - 1 || column < 0 || row < 0 || row > rows - 1) == false);
+
+		m_value[GetIndice(column, row)] = value;
 	}
 
-	void TempAdd(Node<K, V>* truc) 
-	{ 
-		buckets[std::hash<K>{}(truc->key) % 8] = truc;
+	Pair<int, int> GetColumnAndRow() { return { columns, rows }; };
+
+	int GetSize() { return m_size; };
+
+	Matrice() :
+		m_size(columns * rows)
+	{
+		for (int i = 0; i < m_size; i++)
+			m_value[i] = 0;
 	}
 
-	V* find(const K& key)
+	Matrice(T* value) :
+		m_size(columns* rows)
 	{
-		size_t index = std::hash<K>{}(key) % bucket_count;
-		Node<K, V>* current = buckets[index];
-
-		while (current != nullptr)
-		{
-			if (current->key == key)
-				return &current->value;
-			current = current->next;
-		}
-
-		return nullptr;
+		for (int i = 0; i < m_size; i++)
+			m_value[i] = value[i];
 	}
 
-	void insert(K key, V value)
+	T& operator()(int column, int row)
 	{
-		size_t index = std::hash<K>{}(key) % bucket_count;
-		Node<K, V>* current = buckets[index];
-
-		if (current != nullptr)
-		{
-			while (current->next != nullptr)
-			{
-				if (current->next->key == key)
-					return;
-				current = current->next;
-			}
-		}
-
-		Node<K,V>* newNode = allocator.allocate(1);
-		new (newNode) Node<K, V>(std::move_if_noexcept(key), std::move_if_noexcept(value), nullptr);
-
-		if(current == nullptr)
-			buckets[index] = newNode;
-		else
-			current->next = newNode;
+		return GetValue(column, row);
 	}
 
-	V& operator[](const K& key)
+	Matrice operator+(const Matrice& other)
 	{
-		size_t index = std::hash<K>{}(key) % bucket_count;
-		Node<K, V>* current = buckets[index];
+		Matrice<columns, rows, T> new_matrice;
 
-		while (current != nullptr)
-		{
-			if (current->key == key)
-				return current->value;
-			current = current->next;
-		}
-
-		std::cout << "Value not found" << std::endl;
+		for (int i = 0; i < m_size; i++)
+			new_matrice.m_value[i] = m_value[i] + other.m_value[i];
+		return new_matrice;
 	}
 
-	MyUnorderedMap(const MyUnorderedMap& other) :
-		bucket_count(other.bucket_count),
-		buckets(other.bucket_count, nullptr)
+	Matrice& operator+=(const Matrice& other)
 	{
-		for (size_t i = 0; i < other.buckets.size_(); i++)
-		{
-			Node<K, V>* other_current = other.buckets[i];
-			Node<K, V>* last_created = nullptr;
-
-			while (other_current != nullptr)
-			{
-				Node<K, V>* newNode = allocator.allocate(1);
-				new (newNode) Node<K, V>{other_current->key, other_current->value, nullptr};
-
-				if (last_created == nullptr)
-					buckets[i] = newNode;
-				else
-					last_created->next = newNode;
-
-				last_created = newNode;
-				other_current = other_current->next;
-			}
-		}
-	}
-
-	MyUnorderedMap(MyUnorderedMap&& other) :
-		bucket_count(other.bucket_count),
-		buckets(std::move(other.buckets))
-	{
-		other.bucket_count = 0;
-	}
-
-	MyUnorderedMap& operator=(const MyUnorderedMap& other)
-	{
-		if (this == &other) return *this;
-
-		for (auto& bucket : buckets)
-		{
-			Node<K, V>* current = bucket;
-			while (current != nullptr)
-			{
-				Node<K, V>* next = current->next;
-
-				current->~Node();
-				allocator.deallocate(current, 1);
-				current = next;
-			}
-		}
-
-		bucket_count = other.bucket_count;
-		buckets = vector_l<Node<K, V>*>(other.bucket_count, nullptr);
-
-		for (size_t i = 0; i < other.buckets.size_(); i++)
-		{
-			Node<K, V>* other_current = other.buckets[i];
-			Node<K, V>* last_created = nullptr;
-
-			while (other_current != nullptr)
-			{
-				Node<K, V>* newNode = allocator.allocate(1);
-				new (newNode) Node<K, V>{other_current->key, other_current->value, nullptr};
-
-				if (last_created == nullptr)
-					buckets[i] = newNode;
-				else
-					last_created->next = newNode;
-
-				last_created = newNode;
-				other_current = other_current->next;
-			}
-		}
-		
+		for (int i = 0; i < m_size; i++)
+			m_value[i] += other.m_value[i];
 		return *this;
 	}
 
-	MyUnorderedMap& operator=(MyUnorderedMap&& other)
+	template<Arithmetic Nbr>
+	Matrice& operator*=(const Nbr& scalar)
 	{
-		if (this == &other) return *this;
-
-		for (auto& bucket : buckets)
-		{
-			Node<K, V>* current = bucket;
-			while (current != nullptr)
-			{
-				Node<K, V>* next = current->next;
-
-				current->~Node();
-				allocator.deallocate(current, 1);
-				current = next;
-			}
-		}
-
-		bucket_count = other.bucket_count;
-		buckets = std::move(other.buckets);
-
-		other.bucket_count = 0;
-
+		for (int i = 0; i < m_size; i++)
+			m_value[i] *= scalar;
 		return *this;
 	}
 
-	void erase(const K& key)
+	template<Arithmetic Nbr>
+	Matrice& operator*(const Nbr& scalar)
 	{
-		size_t index = std::hash<K>{}(key) % bucket_count;
-		Node<K, V>* current = buckets[index];
-		Node<K, V>* previous = buckets[index];
-		
-		while (current != nullptr)
+		Matrice<columns, rows, T> new_matrice;
+
+		for (int i = 0; i < m_size; i++)
+			new_matrice.m_value[i] = m_value[i] * scalar;
+		return new_matrice;
+	}
+
+	template<int other_columns>
+	Matrice<other_columns, rows, T> operator*(const Matrice<other_columns, columns, T>& other)
+	{
+		Matrice<other_columns, rows, T> new_matrice;
+
+		for (int i = 0; i < rows; i++)
 		{
-			if (current->key == key)
+			for (int j = 0; j < other_columns; j++)
 			{
-				if (current->next != nullptr)
-					previous->next = current->next;
-				else if (previous != current)
-					previous->next = nullptr;
+				T value = 0;
+				for (int k = 0; k < columns; k++)
+					value += m_value[GetIndice(k, i)] * other.m_value[GetIndice(j, k)];
 
-				current->~Node();
-				allocator.deallocate(current, 1);
-				return;
+				new_matrice.m_value[GetIndice(j, i)] = value; //Oui j puis i car c'est column puis row dans la déclaration
 			}
-
-			previous = current;
-			current = current->next;
 		}
 
+		return new_matrice;
+	}
+
+	Matrice<1,rows,T> operator*(const Matrice<1, rows, T>& other)
+	{
+		Matrice<1, rows, T> new_matrice;
+		
+		for (int i = 0; i < rows; i++)
+		{
+			T value = 0;
+			for(int j = 0; j < columns; j++)
+				value += m_value[GetIndice(j, i)] * other.m_value[i];
+
+			new_matrice.m_value[i] = value;
+		}
+
+		return new_matrice;
+	}
+
+	Vector2<T> operator*(const Vector2<T>& vec)
+	{
+		Vector2<T> new_vec;
+		new_vec.x = vec.x * m_value[0] + vec.x * m_value[1];
+		new_vec.y = vec.y * m_value[2] + vec.y * m_value[3];
+		return new_vec;
 	}
 };
 
+template<int nbr, typename T>
+Matrice<nbr, nbr, T> Identity()
+{
+	Matrice<nbr, nbr, T> identity_matrice;
+	for (int i = 0; i < nbr; i++)
+	{
+		for (int j = 0; j < nbr; j++)
+		{
+			if (i == j)
+				identity_matrice.SetValue(j, i, static_cast<T>(1));
+		}
+	}
+	return identity_matrice;
+}
 
+
+using Mat4x4f = Matrice<4, 4, float>;
+using Mat4x4i = Matrice<4, 4, int>;
+using Mat2x2i = Matrice<2, 2, int>;
 
 int main()
 {
+	int ilist[] = {
+		4, 2,
+		6, 1
+	};
+	Mat2x2i mat3 = Mat2x2i(ilist);
 
-	MyUnorderedMap<std::string, int> map;
-	map.TempAdd(new Node<std::string, int>(std::string("test"), 5, nullptr));
-	int test = map["test"];
-	std::cout << test << std::endl;
+	Mat4x4i identity = Identity<4, int>();
 
-	MyUnorderedMap<std::string, int> map2 = map;
-	std::string truc = "truc";
-	map2.insert(truc, 8);
-	//map2["truc"] = 34;
-	int test2 = map2["truc"];
-	std::cout << test2 << std::endl;
+	float list[] = {
+		2.f, 2.f, 5.f, 6.f,
+		1.f, 0.f, 9.f, 2.f,
+		8.f, 7.f, 4.f, 1.f,
+		4.f, 5.f, 2.f, 2.f
+	};
+	Mat4x4f mat2 = Mat4x4f(list);
+	mat2.SetValue(0, 1, 1.f);
+
+	Mat4x4f mat;
+	mat.SetValue(0, 1, 29.f);
+	mat(0, 1) = 32.f;
+	Mat4x4f new_mat = mat * mat2;
+	float f = new_mat(0, 1);
+	std::cout << f << std::endl;
 }
 
 
@@ -276,6 +189,32 @@ int main()
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//MyUnorderedMap<std::string, int> map;
+//map.TempAdd(new Node<std::string, int>(std::string("test"), 5, nullptr));
+//int test = map["test"];
+//std::cout << test << std::endl;
+
+//MyUnorderedMap<std::string, int> map2 = map;
+//std::string truc = "truc";
+//map2.insert(truc, 8);
+////map2["truc"] = 34;
+//int test2 = map2["truc"];
+//std::cout << test2 << std::endl;
 
 
 
