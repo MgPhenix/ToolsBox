@@ -74,7 +74,7 @@ public:
 		return *this;
 	}
 
-	template<Arithmetic Nbr>
+	template<Number Nbr>
 	Matrice& operator*=(const Nbr& scalar)
 	{
 		for (int i = 0; i < m_size; i++)
@@ -82,7 +82,7 @@ public:
 		return *this;
 	}
 
-	template<Arithmetic Nbr>
+	template<Number Nbr>
 	Matrice& operator*(const Nbr& scalar)
 	{
 		Matrice<columns, rows, T> new_matrice;
@@ -152,6 +152,13 @@ Matrice<nbr, nbr, T> Identity()
 	return identity_matrice;
 }
 
+
+using Mat1x1f = Matrice<1, 1, float>;
+using Mat2x1f = Matrice<2, 1, float>;
+using Mat1x2f = Matrice<1, 2, float>;
+using Mat2x2f = Matrice<2, 2, float>;
+using Mat2x3f = Matrice<2, 3, float>;
+using Mat3x3f = Matrice<3, 3, float>;
 
 using Mat4x4f = Matrice<4, 4, float>;
 using Mat4x4i = Matrice<4, 4, int>;
