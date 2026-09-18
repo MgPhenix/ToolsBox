@@ -1,6 +1,6 @@
 /**
 * @file Vector4.h
-* @brief
+* @brief 3d Vector
 *
 * @version 0.1
 * @date 2026-09-18

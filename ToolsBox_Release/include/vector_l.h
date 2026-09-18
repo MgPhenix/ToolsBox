@@ -1,6 +1,6 @@
 /**
 * @file vector_l.h
-* @brief idk for now
+* @brief Light version of std::vector
 *
 * @version 0.1
 * @date 2026-07-30

@@ -1,6 +1,6 @@
 /**
-* @file unorderer_map_l.h
-* @brief A light version of th unordered_map (still WIP)
+* @file unordered_map_l.h
+* @brief Light version of std::unordered_map (still WIP)
 *
 * @version 0.1
 * @date 2026-09-16

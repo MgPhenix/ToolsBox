@@ -1,6 +1,6 @@
 /**
 * @file Vector2.h
-* @brief
+* @brief 2d Vector
 *
 * @version 0.1
 * @date 2026-07-04
