@@ -11,6 +11,9 @@
 #pragma once
 #include "PrimitiveTypes.h"
 
+/**
+* @brief A Shared Pointer class (idk what am suppose to say)
+*/
 template<typename T>
 class SharedPtr
 {

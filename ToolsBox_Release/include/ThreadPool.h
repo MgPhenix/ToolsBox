@@ -39,7 +39,7 @@ public:
 
 	void WorkerLoop();
 	
-	//NOT MADE BY ME CAUSE IDK HOW IT WORK (i will redo it later)
+	//NOT MADE BY ME CAUSE IDK HOW IT WORK (i will redo it later) (now i understand how it work)
 	template<typename F,typename... Args>
 	auto Submit(F&& func, Args&&... args) -> std::future<std::invoke_result_t<F, Args...>>
 	{

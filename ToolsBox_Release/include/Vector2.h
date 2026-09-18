@@ -119,7 +119,6 @@ public:
 		return Vector2<T>(x / other, y / other);
 	};
 
-
 	bool operator==(const Vector2<T>& other) const
 	{
 		return x == other.x && y == other.y;
@@ -134,7 +133,6 @@ public:
 	{
 		return x * x + y * y;
 	};
-
 
 	Vector2<T> Normalized()
 	{

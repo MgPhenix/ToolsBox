@@ -96,6 +96,10 @@
 
 using Vector2i = Vector2<int32>;
 using Vector2f = Vector2<float32>;
+using Vector3i = Vector3<int32>;
+using Vector3f = Vector3<float32>;
+using Vector4i = Vector4<int32>;
+using Vector4f = Vector4<float32>;
 
 constexpr float32 PI = 3.1415927f;
 constexpr float32 RAD_TO_DEG = float32(180.0f / PI);

@@ -14,7 +14,7 @@
 #define ASSERT( condition ) if ( condition == false ) throw; // scotch solution
 
 /**
-* @brief vector light
+* @brief Custom vector designed to be more "light" than the official one
 */
 template<typename T, typename Allocator = MyAllocator<T>>
 class vector_l

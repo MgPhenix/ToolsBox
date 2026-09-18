@@ -10,6 +10,9 @@
 */
 #pragma once
 
+/**
+* @brief A Unique Pointer class (idk what am suppose to say)
+*/
 template<typename T>
 class UniquePtr
 {

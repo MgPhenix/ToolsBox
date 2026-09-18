@@ -33,7 +33,7 @@ int main()
 
     int a = 3;
     
-    a = Clamp(a + 2, 2, 4); // Clamp say that a shoul be between 2 and 4,  because a + 2 = 5 it will return the maximum so 4
+    a = Clamp(a + 2, 2, 4); // Clamp say that a should be between 2 and 4,  because a + 2 = 5 it will return the maximum so 4
 
     return 0;
 }

@@ -81,6 +81,7 @@ struct lambda_function_traits<R(C::*)(Args...)>
 	using args_tuple = std::tuple<Args...>;
 };
 
+
 template<typename T>
 constexpr bool is_number = std::is_integral_v<T> || std::is_floating_point_v<T>;
 

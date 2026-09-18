@@ -10,6 +10,9 @@
 */
 #pragma once
 
+/**
+* @brief A really simple memory Allocator
+*/
 template<typename T>
 struct MyAllocator
 {
@@ -17,15 +20,23 @@ struct MyAllocator
 
 	MyAllocator() = default;
 
+	/**
+	* @brief Allocate a zone of memory
+	* @param size_t size : Size of memory you want to allocate, memory allocated will be sizeof(T) * size
+	* @return T* : A pointer to the allocated memory address
+	*/
 	T* allocate(size_t size)
 	{
-		//std::cout << "Allocate(" << size << ")" << std::endl;
 		return static_cast<T*>(::operator new(size * sizeof(T)));
 	}
 
+	/**
+	* @brief Deallocate a zone of memory
+	* @param T* ptr : A pointer to an allocated memory adress
+	* @param size_t size : Size of memory you want to deallocate, memory deallocated will be sizeof(T) * size
+	*/
 	void deallocate(T* ptr, size_t size)
 	{
-		//std::cout << "Deallocate(" << size << ")" << std::endl;
 		::operator delete(ptr, size * sizeof(T));
 	}
 

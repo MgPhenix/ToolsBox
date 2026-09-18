@@ -27,7 +27,7 @@ private:
 
 public:
 
-	explicit ObjectPool(size_t size) :
+	explicit ObjectPool(size_t size) : //I forgot what explicit do bruh
 		m_objectPool(size),
 		m_active(size, false) { }
 
