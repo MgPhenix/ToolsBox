@@ -43,11 +43,11 @@
 */
 #define LOG_DEBUG( message )	Logfile::GetInstance().LOG(Severity::DEBUG,    message);
 #else
-/*
+/**
 * @brief Function desactived in Release
 */
 #define DEBUG_ASSERT( condition ) {}
-/*
+/**
 * @brief Function desactived in Release
 */
 #define LOG_DEBUG( message ) {}
@@ -108,3 +108,30 @@ constexpr float32 GRAVITY = 9.80665f;
 
 using Radians = float32;
 using Degrees = float32;
+
+
+/**
+* @brief Convert a Vector2 in a Vector3 : z variable will be 1
+* @return New Vector3 with
+* @return x = Vector2.x
+* @return y = Vector2.y 
+* @return z = 1
+*/
+template<typename T>
+Vector3<T> Vec2ToVec3(Vector2<T> vec)
+{
+	return Vector3<T>(vec.x, vec.y, 1);
+}
+/**
+* @brief Convert a Vector3 in a Vector4 : w variable will be 1
+* @return New Vector4 with
+* @return x = Vector3.x
+* @return y = Vector3.y
+* @return z = Vector3.z
+* @return w = 1
+*/
+template<typename T>
+Vector4<T> Vec3ToVec4(Vector3<T> vec)
+{
+	return Vector4<T>(vec.x, vec.y, vec.z, 1);
+}

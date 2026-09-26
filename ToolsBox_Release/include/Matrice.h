@@ -384,3 +384,17 @@ Matrice<4, 4, T> RotateZ(T angle)
 
 	return rotate_matrice;
 }
+
+template<typename T>
+Matrice<4, 4, T> Ortho(T left, T right, T bottom, T top, T near, T far)
+{
+	Matrice<4, 4, T> ortho_matrice = Identity<4,T>();
+	ortho_matrice.SetValue(0, 0, 2.f / (right - left) );
+	ortho_matrice.SetValue(3, 0, -( (right + left) / (right - left) ));
+	ortho_matrice.SetValue(1, 1, 2.f / (top - bottom) );
+	ortho_matrice.SetValue(3, 1, -( (top + bottom) / (top - bottom) ));
+	ortho_matrice.SetValue(2, 2, 1.f / ( far - near ));
+	ortho_matrice.SetValue(3, 2, -( near / (far -  near) ));
+
+	return ortho_matrice;
+}
