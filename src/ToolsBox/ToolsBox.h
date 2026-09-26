@@ -108,3 +108,16 @@ constexpr float32 GRAVITY = 9.80665f;
 
 using Radians = float32;
 using Degrees = float32;
+
+
+template<typename T>
+Vector3<T> Vec2ToVec3(Vector2<T> vec)
+{
+	return Vector3<T>(vec.x, vec.y, 1);
+}
+
+template<typename T>
+Vector4<T> Vec3ToVec4(Vector3<T> vec)
+{
+	return Vector4<T>(vec.x, vec.y, vec.z, 1);
+}
