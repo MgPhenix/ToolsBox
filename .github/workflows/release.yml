@@ -154,7 +154,7 @@ jobs:
           tag_name: ${{ inputs.tag }}
           name: ${{ inputs.title }}
           prerelease: ${{ inputs.pre-release }}
-          body_path: ${{ github.workspace }}-CHANGELOG.txt
+          body_path: CHANGELOG.txt
           body: ${{ inputs.release-desc }}
           target_commitish: ${{ github.sha }}
           generate_release_notes: true
