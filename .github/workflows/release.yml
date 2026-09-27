@@ -1,0 +1,46 @@
+name: Create Release
+
+on:
+  workflow_dispatch:
+    inputs:
+
+      tag:
+        description: "Tag de la release"
+        required: true
+        type: string
+
+      title:
+        description: "Title of the release"
+        required: false
+        default: "Default Release"
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+  
+  create_release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifacts@v4
+        with:
+          pattern: Toolsbox-*
+          path: dist
+          merge-multiple: true
+          ref: ${{ inputs.tag }}
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v
+        with:
+          tag_name: ${{ inputs.tag }}
+          generate_release_notes: true
+          files: |
+            dist/Toolsbox-Windows-x64.lib
+            dist/Toolsbox-Linux-64.a
+            dist/Toolsbox-macOS-x64.a
