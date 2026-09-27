@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - name: Download Artifact
-        uses: actions/download-artifacts@v4
+        uses: actions/download-artifact@v4
         with:
           pattern: Toolsbox-*
           path: dist

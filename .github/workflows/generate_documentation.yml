@@ -1,0 +1,13 @@
+name: Generate Documentation
+
+on:
+    workflow_call:
+
+jobs:
+    default:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Do Nothing
+              run: |
+                echo Hello
