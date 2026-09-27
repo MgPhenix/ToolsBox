@@ -21,6 +21,12 @@ on:
         default: false
         type: boolean
 
+      release-desc:
+        description: "Description of the release"
+        required: false
+        default: ""
+        type: string
+
 
 permissions:
   contents: write
@@ -141,13 +147,15 @@ jobs:
             -DestinationPath "dist/ToolsBox-macOS-x64.zip" `
             -Force
 
-            
+
       - name: Release On Github
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ inputs.tag }}
           name: ${{ inputs.title }}
           prerelease: ${{ inputs.pre-release }}
+          body_path: ${{ github.workspace }}-CHANGELOG.txt
+          body: ${{ inputs.release-desc }}
           target_commitish: ${{ github.sha }}
           generate_release_notes: true
           files: |
