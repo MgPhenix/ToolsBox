@@ -35,13 +35,13 @@ jobs:
           merge-multiple: true
           ref: ${{ inputs.tag }}
 
-      - name: Create Release
+      - name: Release On Github
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ inputs.tag }}
           name: ${{ inputs.title }}
           generate_release_notes: true
           files: |
-            dist/Toolsbox-Windows-x64.lib
-            dist/Toolsbox-Linux-64.a
-            dist/Toolsbox-macOS-x64.a
+            dist/ToolsBox-Windows-x64.lib
+            dist/ToolsBox-Linux-x64.a
+            dist/ToolsBox-macOS-x64.a
