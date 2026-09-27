@@ -40,6 +40,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Download Artifact
         uses: actions/download-artifact@v4
         with:
@@ -47,6 +50,28 @@ jobs:
           path: dist
           merge-multiple: true
           ref: ${{ inputs.tag }}
+
+      - name: Compress File
+        shell: cmd
+        run: |
+          mkdir dist/ToolsBox_Release
+          mkdir dist/ToolsBox_Release/include
+          mkdir dist/ToolsBox_Release/lib
+          mkdir dist/ToolsBox_Release/Examples
+          mkdir dist/ToolsBox_Release/docs
+
+          xcopy ./src\ToolsBox/*.h dist/ToolsBox_Release/include /S /Y
+          xcopy ./src\ToolsBox/*.inl dist/ToolsBox_Release/include /S /Y
+
+          copy ./README.md dist/ToolsBox_Release
+
+          xcopy ./src/Examples dist/ToolsBox_Release/Examples /S /Y
+
+          xcopy dist/ToolsBox-Documentation/docs dist/ToolsBox_Release/docs /S /Y
+          xcopy dist/ToolsBox-Windows-x64.lib dist/ToolsBox_Release/lib
+
+          powershell Compress-Archive dist/ToolsBox_Release dist/ToolsBox_Release.zip -Force
+
 
       - name: Release On Github
         uses: softprops/action-gh-release@v2
@@ -60,3 +85,4 @@ jobs:
             dist/ToolsBox-Windows-x64.lib
             dist/ToolsBox-Linux-x64.a
             dist/ToolsBox-macOS-x64.a
+            dist/ToolsBox_Release.zip
