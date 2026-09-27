@@ -64,7 +64,7 @@ jobs:
           Copy-Item "dist/ToolsBox-macOS-x64.a" "dist/package-macos/lib/"
 
           New-Item -ItemType Directory -Force -Path "dist/package-windows/docs"
-          Copy-Item -Path "dist/docs/*" "dist/package-windows/docs/"
+          Copy-Item -Path "dist/html/*" "dist/package-windows/docs/"
 
 
            Compress-Archive `
