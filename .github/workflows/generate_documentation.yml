@@ -5,9 +5,16 @@ on:
 
 jobs:
     default:
-        runs-on: ubuntu-latest
+        runs-on: windows-latest
 
         steps:
-            - name: Do Nothing
+            - name: Generate Documentation
+              shell: pwsh
               run: |
-                echo Hello
+                ./bin/doxygen/doxygen.exe ../src/ToolsBox/Doxyfile
+            
+            - name: Upload Documentation
+              uses: actions/upload-artifact@v4
+              with:
+                name: ToolsBox-Documentation
+                path: docs/html/

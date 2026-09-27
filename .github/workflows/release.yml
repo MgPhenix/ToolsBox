@@ -5,7 +5,7 @@ on:
     inputs:
 
       tag:
-        description: "Tag de la release"
+        description: "Tag of the release"
         required: true
         type: string
 
@@ -14,9 +14,17 @@ on:
         required: false
         default: "Default Release"
         type: string
+      
+      pre-release:
+        description: "Is the release a Pre-Release ?"
+        required: false
+        default: false
+        type: boolean
+
 
 permissions:
   contents: write
+
 
 jobs:
   build:
@@ -40,6 +48,8 @@ jobs:
         with:
           tag_name: ${{ inputs.tag }}
           name: ${{ inputs.title }}
+          prerelease: ${{ inputs.pre-release }}
+          target_commitish: ${{ github.sha }}
           generate_release_notes: true
           files: |
             dist/ToolsBox-Windows-x64.lib
