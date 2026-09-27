@@ -74,6 +74,9 @@ public:
 		return *this;
 	};
 
+	/**
+	* @return The number of utilisation of the pointer
+	*/
 	int32 GetCount() { return refcount ? *refcount : 0; };
 
 	T* operator->() const {

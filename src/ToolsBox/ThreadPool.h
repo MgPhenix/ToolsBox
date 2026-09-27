@@ -37,7 +37,7 @@ public:
 	ThreadPool();
 	~ThreadPool();
 
-	void WorkerLoop();
+	void WorkerLoop(); //Maybe should be in private ?
 	
 	//NOT MADE BY ME CAUSE IDK HOW IT WORK (i will redo it later) (now i understand how it work)
 	template<typename F,typename... Args>

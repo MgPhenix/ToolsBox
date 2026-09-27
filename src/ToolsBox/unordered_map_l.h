@@ -83,6 +83,9 @@ public:
 		buckets[std::hash<K>{}(truc->key) % 8] = truc;
 	}
 
+	/**
+	* @return If key is valid return the pointer attached to the key
+	*/
 	V* find(const K& key)
 	{
 		size_t index = std::hash<K>{}(key) % bucket_count;
@@ -97,7 +100,9 @@ public:
 
 		return nullptr;
 	}
-
+	/**
+	* @brief Add a pair Key, Value in the map
+	*/
 	void insert(K key, V value)
 	{
 		size_t index = std::hash<K>{}(key) % bucket_count;
@@ -236,7 +241,9 @@ public:
 
 		return *this;
 	}
-
+	/**
+	* @brief Erase a value attached to the key
+	*/
 	void erase(const K& key)
 	{
 		size_t index = std::hash<K>{}(key) % bucket_count;
