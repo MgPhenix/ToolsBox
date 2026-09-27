@@ -30,7 +30,7 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v4
         with:
-          pattern: bin/Toolsbox-*
+          pattern: ToolsBox-*
           path: dist
           merge-multiple: true
           ref: ${{ inputs.tag }}
@@ -42,6 +42,6 @@ jobs:
           name: ${{ inputs.title }}
           generate_release_notes: true
           files: |
-            dist/bin/Toolsbox-Windows-x64.lib
-            dist/bin/Toolsbox-Linux-64.a
-            dist/bin/Toolsbox-macOS-x64.a
+            dist/Toolsbox-Windows-x64.lib
+            dist/Toolsbox-Linux-64.a
+            dist/Toolsbox-macOS-x64.a
