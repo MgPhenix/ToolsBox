@@ -76,12 +76,29 @@ jobs:
           Copy-Item "./README.md" "dist/package-windows/"
 
 
-          
+
 
           New-Item -ItemType Directory -Force -Path "dist/package-linux/lib"
           Copy-Item "dist/ToolsBox-Linux-x64.a" "dist/package-linux/lib/"
           New-Item -ItemType Directory -Force -Path "dist/package-linux/docs"
           Copy-Item -Path "dist/html/*" "dist/package-linux/docs/html"          
+
+          New-Item -ItemType Directory -Force -Path "dist/package-linux/examples"          
+          New-Item -ItemType Directory -Force -Path "dist/package-linux/include"
+               
+          Copy-Item `
+              -Path "./src/Examples/*" `
+              -Destination "dist/package-linux/examples/" `
+              -Recurse
+
+          Get-ChildItem -Path "./src/ToolsBox" -Recurse -File |
+              Where-Object { $_.Extension -in ".h", ".inl" } |
+              Copy-Item -Destination {
+                  Join-Path "dist/package-linux/include" $_.Name
+              }
+
+          Copy-Item "./README.md" "dist/package-linux/"
+
 
 
 
@@ -89,6 +106,23 @@ jobs:
           Copy-Item "dist/ToolsBox-macOS-x64.a" "dist/package-macos/lib/"
           New-Item -ItemType Directory -Force -Path "dist/package-macos/docs"
           Copy-Item -Path "dist/html/*" "dist/package-macos/docs/html"        
+
+          New-Item -ItemType Directory -Force -Path "dist/package-macos/examples"          
+          New-Item -ItemType Directory -Force -Path "dist/package-macos/include"
+               
+          Copy-Item `
+              -Path "./src/Examples/*" `
+              -Destination "dist/package-macos/examples/" `
+              -Recurse
+
+          Get-ChildItem -Path "./src/ToolsBox" -Recurse -File |
+              Where-Object { $_.Extension -in ".h", ".inl" } |
+              Copy-Item -Destination {
+                  Join-Path "dist/package-macos/include" $_.Name
+              }
+
+          Copy-Item "./README.md" "dist/package-macos/"
+
 
 
 
@@ -107,6 +141,7 @@ jobs:
             -DestinationPath "dist/ToolsBox-macOS-x64.zip" `
             -Force
 
+            
       - name: Release On Github
         uses: softprops/action-gh-release@v2
         with:
