@@ -1,5 +1,11 @@
 #include "Utils.h"
 #include <random>
+#include "Config.h"
+
+#if defined(LINUX) || defined(MACOS)
+#include <ctime>
+#endif
+
 
 namespace UUID
 {

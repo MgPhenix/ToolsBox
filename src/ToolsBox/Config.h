@@ -27,3 +27,16 @@
 #if CPP_VERSION >= 201402L
 #define CPP_14
 #endif
+
+
+#ifdef _WIN32
+#define WINDOWS
+#endif
+
+#ifdef __linux__
+#define LINUX
+#endif 
+
+#ifdef __APPLE__
+#define MACOS
+#endif

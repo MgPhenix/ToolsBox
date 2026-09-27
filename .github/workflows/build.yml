@@ -23,7 +23,7 @@ jobs:
           - os: windows-latest
             name: Windows-x64
           - os: ubuntu-latest
-            names: Linux-x64
+            name: Linux-x64
           - os: macos-latest
             name: macOS-x64
     
@@ -43,14 +43,14 @@ jobs:
         run: |
             if not exist bin mkdir bin
             cl /c /EHsc /std:c++20 /Isrc/Toolsbox src/ToolsBox\*.cpp
-            lib /OUT:ToolsBox-${{ matrix.name }}.lib *.obj
+            lib /OUT:bin/ToolsBox-${{ matrix.name }}.lib *.obj
 
       - name: Build Linux/macOS
         if: runner.os == 'Linux' || runner.os == 'macOS'
         run : |
           mkdir -p bin
           g++ -std=c++20 -Isrc/ToolsBox -c src/ToolsBox/*.cpp
-          ar rcs ToolsBox-${{ matrix.name }}.a *.o
+          ar rcs bin/ToolsBox-${{ matrix.name }}.a *.o
 
       - name: Upload Executable
         uses: actions/upload-artifact@v4
