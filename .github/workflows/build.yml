@@ -1,1 +1,59 @@
+name: Build Toolbox
 
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: write
+
+
+jobs:
+  build:
+    name: Build ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            name: Windows-x64
+          - os: ubuntu-latest
+            names: Linux-x64
+          - os: macos-latest
+            name: macOS-x64
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: SetUp MSCV
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Build Windows
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: |
+            if not exist bin mkdir bin
+            cl /c /EHsc /std:c++20 /Isrc/Toolsbox src/ToolsBox\*.cpp
+            lib /OUT:ToolsBox-${{ matrix.name }}.lib *.obj
+
+      - name: Build Linux/macOS
+        if: runner.os == 'Linux' || runner.os == 'macOS'
+        run : |
+          mkdir -p bin
+          g++ -std=c++20 -Isrc/ToolsBox -c ToolsBox/src/*.cpp
+          ar rcs ToolsBox-${{ matrix.name }}.a *.o
+
+      - name: Upload Executable
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test-${{ matrix.name }}
+          path: bin/ToolsBox*
