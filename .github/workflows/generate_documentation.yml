@@ -17,6 +17,7 @@ jobs:
             - name: Generate Documentation
               shell: pwsh
               run: |
+                New-Item -ItemType Directory -Force -Path "docs/html"
                 ./bin/doxygen/doxygen.exe ./src/ToolsBox/Doxyfile
             
             - name: Upload Documentation
