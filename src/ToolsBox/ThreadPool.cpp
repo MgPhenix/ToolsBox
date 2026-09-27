@@ -17,7 +17,7 @@ ThreadPool::ThreadPool(size_t ThreadNbr) :
 ThreadPool::ThreadPool() :
 	m_stop(false)
 {
-	uint32 threadNbr = std::thread::hardware_concurrency() - 1;
+	uint32 threadNbr = std::thread::hardware_concurrency() - 1; //peut etre a tweak car 0 - 1 = tres bcp grand nombre
 	for (uint32 i = 0; i < threadNbr; i++)
 	{
 		m_threads.emplace_back([this]()

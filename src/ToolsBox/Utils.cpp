@@ -77,7 +77,13 @@ std::string GetLocalTime()
 {
 	time_t timestamp = time(NULL);
 	struct tm datetime;
+
+#ifdef WINDOWS
 	localtime_s(&datetime, &timestamp);
+#else
+	localtime_r(&datetime, &timestamp);
+#endif
+
 	char output[50];
 
 	strftime(output, 50, "%H:%M:%S", &datetime);
