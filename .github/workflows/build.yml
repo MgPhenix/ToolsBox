@@ -1,9 +1,9 @@
 name: Build Toolbox
 
 on:
-  push:
-    branches:
-      - master
+  # push: only temp
+    # branches:
+    #   - master
   workflow_dispatch:
   workflow_call:
 

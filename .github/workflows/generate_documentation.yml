@@ -14,7 +14,7 @@ jobs:
             - name: Generate Documentation
               shell: pwsh
               run: |
-                ./bin/doxygen/doxygen.exe ../src/ToolsBox/Doxyfile
+                ./bin/doxygen/doxygen.exe ./src/ToolsBox/Doxyfile
             
             - name: Upload Documentation
               uses: actions/upload-artifact@v4
