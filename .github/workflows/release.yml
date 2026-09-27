@@ -30,8 +30,13 @@ jobs:
   build:
     uses: ./.github/workflows/build.yml
   
+  create-documentation:
+    uses: ./.github/workflows/generate_documentation.yml
+
   create_release:
-    needs: build
+    needs: 
+      - build
+      - create-documentation
     runs-on: ubuntu-latest
 
     steps:
