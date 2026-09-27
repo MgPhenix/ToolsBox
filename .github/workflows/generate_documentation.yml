@@ -3,6 +3,9 @@ name: Generate Documentation
 on:
     workflow_call:
 
+permissions:
+  contents: write
+
 jobs:
     default:
         runs-on: windows-latest
