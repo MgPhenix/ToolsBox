@@ -60,12 +60,23 @@ jobs:
           Copy-Item -Path "dist/html/*" "dist/package-windows/docs/html"
 
           New-Item -ItemType Directory -Force -Path "dist/package-windows/examples"          
-          New-Item -ItemType Directory -Force -Path "dist/package-windows/include"     
-          Copy-Item -Path "./src/Examples/*" "dist/package-windows/examples/"
+          New-Item -ItemType Directory -Force -Path "dist/package-windows/include"
+               
+          Copy-Item `
+              -Path "./src/Examples/*" `
+              -Destination "dist/package-windows/examples/" `
+              -Recurse
+
+          Get-ChildItem -Path "./src/ToolsBox" -Recurse -File |
+              Where-Object { $_.Extension -in ".h", ".inl" } |
+              Copy-Item -Destination {
+                  Join-Path "dist/package-windows/include" $_.Name
+              }
+
           Copy-Item "./README.md" "dist/package-windows/"
 
 
-
+          
 
           New-Item -ItemType Directory -Force -Path "dist/package-linux/lib"
           Copy-Item "dist/ToolsBox-Linux-x64.a" "dist/package-linux/lib/"
@@ -80,7 +91,7 @@ jobs:
           Copy-Item -Path "dist/html/*" "dist/package-macos/docs/html"        
 
 
-          
+
           Compress-Archive `
             -Path "dist/package-windows/*" `
             -DestinationPath "dist/ToolsBox-Windows-x64.zip" `
