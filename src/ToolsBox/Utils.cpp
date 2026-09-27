@@ -4,6 +4,7 @@
 
 #if defined(LINUX) || defined(MACOS)
 #include <ctime>
+#include <atomic>
 #endif
 
 
@@ -81,7 +82,7 @@ std::string GetLocalTime()
 #ifdef WINDOWS
 	localtime_s(&datetime, &timestamp);
 #else
-	localtime_r(&datetime, &timestamp);
+	localtime_r(&timestamp, &datetime);
 #endif
 
 	char output[50];
