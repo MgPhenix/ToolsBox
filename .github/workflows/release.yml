@@ -58,10 +58,10 @@ jobs:
           Copy-Item "dist/ToolsBox-Windows-x64.lib" "dist/package-windows/lib/"
           
           New-Item -ItemType Directory -Force -Path "dist/package-linux/lib"
-          Copy-Item "dist/ToolsBox-Linux-x64.lib" "dist/package-linux/lib/"
+          Copy-Item "dist/ToolsBox-Linux-x64.a" "dist/package-linux/lib/"
 
           New-Item -ItemType Directory -Force -Path "dist/package-macos/lib"
-          Copy-Item "dist/ToolsBox-macOS-x64.lib" "dist/package-macos/lib/"
+          Copy-Item "dist/ToolsBox-macOS-x64.a" "dist/package-macos/lib/"
 
           New-Item -ItemType Directory -Force -Path "dist/package-windows/docs"
           Copy-Item -Path "dist/ToolsBox-Documentation/docs/*" "dist/package-windows/docs/"
