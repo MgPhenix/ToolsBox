@@ -16,7 +16,7 @@ copy ..\README.md ..\ToolsBox_Release\
 
 xcopy ..\src\Examples ..\ToolsBox_Release\Examples /S /Y
 
-doxygen\doxygen.exe ..\src\ToolsBox\Doxyfile
+doxygen\doxygen.exe ..\src\ToolsBox\DoxyfileLocal
 
 powershell Compress-Archive ..\ToolsBox_Release ..\ToolsBox_Release.zip -Force
 

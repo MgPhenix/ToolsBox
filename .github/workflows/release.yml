@@ -147,6 +147,16 @@ jobs:
             -DestinationPath "dist/ToolsBox-macOS-x64.zip" `
             -Force
 
+      - name: Prepare Release Description
+        shell: bash
+        env:
+          RELEASE_DESC: ${{ inputs.release-desc }}
+        run: |
+          {
+            printf '%s\n\n' "$RELEASE_DESC"
+            cat CHANGELOG.md
+          } > release-body.md
+
 
       - name: Release On Github
         uses: softprops/action-gh-release@v2
@@ -154,8 +164,7 @@ jobs:
           tag_name: ${{ inputs.tag }}
           name: ${{ inputs.title }}
           prerelease: ${{ inputs.pre-release }}
-          body_path: CHANGELOG.txt
-          body: ${{ inputs.release-desc }}
+          body_path: release-body.md
           target_commitish: ${{ github.sha }}
           generate_release_notes: true
           files: |
