@@ -80,7 +80,7 @@ public:
 	/**
 	* @return If key is valid return the pointer attached to the key
 	*/
-	V* find(const K& key)
+	V* find(const K& key) const
 	{
 		size_t index = std::hash<K>{}(key) % bucket_count;
 		Node<K, V>* current = buckets[index];
@@ -121,7 +121,7 @@ public:
 			current->next = newNode;
 	}
 
-	bool contains(const K& key)
+	bool contains(const K& key) const
 	{
 		size_t index = std::hash<K>{}(key) % bucket_count;
 		Node<K, V>* current = buckets[index];
