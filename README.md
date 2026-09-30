@@ -61,7 +61,7 @@ ToolsBox/
 ├── include/
 │   └── ...
 ├── lib/
-│   └── ToolsBox.lib / libToolsBox.a
+│   └── ToolsBox.lib / ToolsBox.a
 └── ...
 ```
 
@@ -129,6 +129,10 @@ For example:
 ```cpp
 #include <ToolsBox/Vector2.h>
 #include <ToolsBox/Matrix.h>
+```
+Or just
+```cpp
+#include <ToolsBox.h>
 ```
 
 The exact headers and available APIs are documented in the generated documentation.
