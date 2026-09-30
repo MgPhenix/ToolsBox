@@ -3,7 +3,7 @@
 * @file Config.h
 * @brief Just some config for macro
 *
-* @version 0.1
+* @version 1.0
 * @date 2026-07-04
 *
 * @copyright idk bro

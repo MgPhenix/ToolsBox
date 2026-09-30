@@ -8,40 +8,13 @@
 
 int main()
 {
-	float ilist[] = {
-		1.f, 0.f, 0.f, 1.f
-	};
-	Matrice<1, 4, float> point = Matrice<1, 4, float>(ilist);
-	//auto rotation = RotateZ(1.5708f);
-	//Matrice<1, 4, float> result = rotation * mat3;
-	
-	auto T = Translate(10.f, 5.f, 2.f);
-	auto R = RotateZ(1.5708f);
-	auto S = Scale(2.f, 2.f, 2.f);
-	
-	auto M = R * T * S;
+	AABBCollider collider(2, 2, 4, 4);
+	AABBCollider collider2(2, 2, 4, 4);
 
-	Vector3<float> p = { 1.f, 0.f, 0.f };
-	auto result = R * p;
+	if (collider2.IsCollidingWith(collider))
+		std::cout << "yes" << std::endl;
 
-
-	Mat4x4i identity = Identity<4, int>();
-
-	float list[] = {
-		2.f, 2.f, 5.f, 6.f,
-		1.f, 0.f, 9.f, 2.f,
-		8.f, 7.f, 4.f, 1.f,
-		4.f, 5.f, 2.f, 2.f
-	};
-	Mat4x4f mat2 = Mat4x4f(list);
-	mat2.SetValue(0, 1, 1.f);
-
-	Mat4x4f mat;
-	mat.SetValue(0, 1, 29.f);
-	mat(0, 1) = 32.f;
-	Mat4x4f new_mat = mat * mat2;
-	float f = new_mat(0, 1);
-	std::cout << f << std::endl;
+	return 0;
 }
 
 
@@ -58,9 +31,42 @@ int main()
 
 
 
-
-
-
+//float ilist[] = {
+//	1.f, 0.f, 0.f, 1.f
+//};
+//Matrice<1, 4, float> point = Matrice<1, 4, float>(ilist);
+////auto rotation = RotateZ(1.5708f);
+////Matrice<1, 4, float> result = rotation * mat3;
+//
+//auto T = Translate(10.f, 5.f, 2.f);
+//auto R = RotateZ(1.5708f);
+//auto S = Scale(2.f, 2.f, 2.f);
+//
+//auto M = R * T * S;
+//
+//Vector3<float> p = { 1.f, 0.f, 0.f };
+//auto result = R * p;
+//
+//
+//Mat4x4i identity = Identity<4, int>();
+//
+//float list[] = {
+//	2.f, 2.f, 5.f, 6.f,
+//	1.f, 0.f, 9.f, 2.f,
+//	8.f, 7.f, 4.f, 1.f,
+//	4.f, 5.f, 2.f, 2.f
+//};
+//Mat4x4f mat2 = Mat4x4f(list);
+//mat2.SetValue(0, 1, 1.f);
+//
+//Mat4x4f mat;
+//mat.SetValue(0, 1, 29.f);
+//mat(0, 1) = 32.f;
+//Mat4x4f new_mat = mat * mat2;
+//float f = new_mat(0, 1);
+//std::cout << f << std::endl;
+//
+//
 
 
 

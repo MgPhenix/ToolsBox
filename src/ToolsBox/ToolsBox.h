@@ -2,7 +2,7 @@
 * @file ToolsBox.h
 * @brief Main file, include only this file because this file include all of the other file from the project
 * 
-* @version 0.1
+* @version 1.0
 * @date 2026-07-04
 * 
 * @copyright idk bro
@@ -30,6 +30,7 @@
 #include "unordered_map_l.h"
 #include "Pair.h"
 #include "Matrice.h"
+#include "Collider.h"
 
 #ifdef _DEBUG
 /**
