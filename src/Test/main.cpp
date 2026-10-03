@@ -1,21 +1,57 @@
 #include "ToolsBox.h"
-#include <iostream>
-#include <functional>
-#include <unordered_map>
-
 #include "unordered_map_l.h"
+#include "Serialization.h"
+
+
+struct Bob
+{
+	std::string name = "Bob";
+	int hair = 0;
+};
+
 
 
 int main()
 {
-	AABBCollider collider(2, 2, 4, 4);
-	AABBCollider collider2(2, 2, 4, 4);
+	Serializer serializer;
 
-	if (collider2.IsCollidingWith(collider))
-		std::cout << "yes" << std::endl;
+	serializer.Load("../../Test.json");
+
+	json& data = serializer.GetData();
+
+	std::string test = serializer.Get<std::string>("Test_2");
+	int test_2;
+	serializer.Read("Test", test_2);
+
+	std::cout << test << "/" << test_2 << std::endl;
+
+//	Bob bob;
+//
+//	serializer.Write("Test", 53);
+//	serializer.Write("Test_2", "Bonjour");
+////	serializer.Write("Test_3", bob);
+//
+//	serializer.Save("../../Test.json");
 
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

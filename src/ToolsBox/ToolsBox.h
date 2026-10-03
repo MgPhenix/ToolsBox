@@ -58,7 +58,7 @@
 * @brief Throw an error and stop programm if condition is false
 */
 #define ASSERT( condition ) if ( condition == false ) throw;
-//#define ASSERT( condition, message ) if ( condition == false ) throw std::runtime_error(message);
+//#define ASSERT( condition, exception ) if ( condition == false ) throw exception;
 
 /**
 * @brief Open a file for write log in it
