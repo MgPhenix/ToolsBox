@@ -12,7 +12,7 @@ int main()
 	AABBCollider collider2(2, 2, 4, 4);
 
 	if (collider2.IsCollidingWith(collider))
-		std::cout << "yes" << std::endl;
+		std::cout << "yes collision" << std::endl;
 
 	return 0;
 }
