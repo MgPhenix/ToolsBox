@@ -47,7 +47,7 @@ public:
 			new (&memory[i]) T*(value);
 	}
 
-	void push_back(T&& val)
+	void push_back(T& val)
 	{
 		if (size == capacity)
 		{

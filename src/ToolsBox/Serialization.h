@@ -10,15 +10,14 @@
 */
 #pragma once
 #include <string>
+#include "vector_l.h"
 #include "json_nlohmann.hpp"
 using json = nlohmann::json;
 
 
 class Serializer
 {
-private:
-
-	std::string main_id;
+protected:
 
 	json m_data;
 
@@ -65,55 +64,68 @@ public:
 		}
 
 		m_data = json::parse(in);
+		in.close();
+	}
+
+	//template<typename T>
+	//T operator[](const std::string& key)
+	//auto operator[](const std::string& key) -> std::invoke_result_t<decltype(Get<T>), std::string, T> // Same same but different
+	//{
+	//	return m_data.value(key, T());
+	//}
+	auto& operator[](const std::string& key)
+	{
+		return m_data[key];
 	}
 };
 
 
 
+using Compound = Serializer;
 
+class ITagSerializer
+{
+private:
 
+	std::string m_fileName;
 
+public:
 
+	std::string GetFileName() { return m_fileName; };
+	void SetFileName(const std::string& file_name) { m_fileName = file_name; };
 
+	// Literally WriteToNbtTag from minecraft
+	virtual void WriteCompoundTag(Compound& data) = 0;
+	virtual void ReadCompoundTag(const Compound& data) = 0;
+};
 
+class JspEncoreMaisTrustBro
+{
+private:
 
+	vector_l<ITagSerializer*> m_toUpdate;
 
+public:
 
+	void UpdateTagWritter()
+	{
+		for (ITagSerializer* serializer : m_toUpdate)
+		{
+			Compound c;
+			serializer->WriteCompoundTag(c);
+			c.Save(serializer->GetFileName());
+		}
+	}
 
+	void UpdateTagReader()
+	{
+		for (ITagSerializer* serializer : m_toUpdate)
+		{
+			Compound c;
+			c.Load(serializer->GetFileName());
+			serializer->ReadCompoundTag(c);
+		}
+	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//class Compound
-//{
-//
-//};
-//
-//
-//class ISerializer
-//{
-//	template<typename... Args>
-//	void Serialize(const Compound& data, Args&&... arg) = 0;
-//
-//	template<typename... Args>
-//	void Deserialize(const Compound& data, Args&&... arg) = 0;
-//};
-
+	void AddTagSerializer(ITagSerializer* serializer) { m_toUpdate.push_back(serializer); };
+};

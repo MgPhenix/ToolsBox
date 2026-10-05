@@ -22,6 +22,11 @@ struct is_same<C, C> {
 	static const bool value = true;
 };
 
+template<typename A, typename B>
+bool constexpr is_same_v = false;
+template<typename C>
+bool constexpr is_same_v<C, C> = true;
+
 
 template<typename T>
 struct remove_pointer {

@@ -2,36 +2,18 @@
 #include "unordered_map_l.h"
 #include "Serialization.h"
 
-
-struct Bob
+class Bob : public ITagSerializer
 {
-	std::string name = "Bob";
-	int hair = 0;
+public:
+	Bob() = default;
 };
-
 
 
 int main()
 {
 	Serializer serializer;
-
-	serializer.Load("../../Test.json");
-
-	json& data = serializer.GetData();
-
-	std::string test = serializer.Get<std::string>("Test_2");
-	int test_2;
-	serializer.Read("Test", test_2);
-
-	std::cout << test << "/" << test_2 << std::endl;
-
-//	Bob bob;
-//
-//	serializer.Write("Test", 53);
-//	serializer.Write("Test_2", "Bonjour");
-////	serializer.Write("Test_3", bob);
-//
-//	serializer.Save("../../Test.json");
+	serializer["Test_3"] = 53;
+	serializer.Save("../../Test2.json");
 
 	return 0;
 }
