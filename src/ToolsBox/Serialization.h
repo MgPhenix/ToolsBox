@@ -1,6 +1,6 @@
 /**
 * @file Serialization.h
-* @brief 
+* @brief Tools for saving data in json file
 *
 * @version 1.0
 * @date 2026-10-03
@@ -67,12 +67,14 @@ public:
 		in.close();
 	}
 
+	//For what we lost
 	//template<typename T>
 	//T operator[](const std::string& key)
 	//auto operator[](const std::string& key) -> std::invoke_result_t<decltype(Get<T>), std::string, T> // Same same but different
 	//{
 	//	return m_data.value(key, T());
 	//}
+
 	auto& operator[](const std::string& key)
 	{
 		return m_data[key];
@@ -96,16 +98,25 @@ public:
 
 	// Literally WriteToNbtTag from minecraft
 	virtual void WriteCompoundTag(Compound& data) = 0;
-	virtual void ReadCompoundTag(const Compound& data) = 0;
+	// Literally ReadToNbtTag from minecraft
+	virtual void ReadCompoundTag(Compound& data) = 0;
 };
 
-class JspEncoreMaisTrustBro
+class SerializerManager
 {
 private:
 
 	vector_l<ITagSerializer*> m_toUpdate;
 
+	SerializerManager() = default;
+
 public:
+
+	static SerializerManager& GetInstance()
+	{
+		static SerializerManager instance;
+		return instance;
+	}
 
 	void UpdateTagWritter()
 	{
@@ -127,5 +138,8 @@ public:
 		}
 	}
 
-	void AddTagSerializer(ITagSerializer* serializer) { m_toUpdate.push_back(serializer); };
+	void AddTagSerializer(ITagSerializer* serializer) 
+	{ 
+		m_toUpdate.push_back(serializer); 
+	};
 };

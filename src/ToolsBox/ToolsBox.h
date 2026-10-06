@@ -31,6 +31,7 @@
 #include "Pair.h"
 #include "Matrice.h"
 #include "Collider.h"
+#include "Serialization.h"
 
 #ifdef _DEBUG
 /**
@@ -93,6 +94,9 @@
 * @param string : name of your task
 */
 #define SCOPE_PROFILER( name ) ScopeProfiler profiler(name);
+
+
+#define serializerManager SerializerManager::GetInstance()
 
 
 using Vector2i = Vector2<int32>;
