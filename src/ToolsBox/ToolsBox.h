@@ -2,7 +2,7 @@
 * @file ToolsBox.h
 * @brief Main file, include only this file because this file include all of the other file from the project
 * 
-* @version 1.0
+* @version 1.1
 * @date 2026-07-04
 * 
 * @copyright idk bro

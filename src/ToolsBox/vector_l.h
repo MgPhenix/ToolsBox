@@ -2,7 +2,7 @@
 * @file vector_l.h
 * @brief Light version of std::vector
 *
-* @version 1.0
+* @version 1.1
 * @date 2026-07-30
 *
 * @copyright idk bro
@@ -10,6 +10,7 @@
 */
 #pragma once
 #include "allocator_l.h"
+#include <functional>
 
 #define ASSERT( condition ) if ( condition == false ) throw; // scotch solution
 

@@ -2,7 +2,7 @@
 * @file Serialization.h
 * @brief Tools for saving data in json file
 *
-* @version 1.0
+* @version 1.1
 * @date 2026-10-03
 *
 * @copyright idk bro
@@ -67,34 +67,17 @@ public:
 	* @brief Get raw json data (nlohmann json)
 	* @return json& : reference to the raw json data
 	*/
-	json& GetData() { return m_data; };
-
+	json& GetData();
 	/**
 	* @brief Save Data to a file
 	* @param const std::string& path : Path to your json file
 	*/
-	void Save(const std::string& path)
-	{
-		std::ofstream out(path);
-		out << m_data.dump(4);
-		out.close();
-	}
+	void Save(const std::string& path);
 	/**
 	* @brief Load Data from a file
 	* @param const std::string& path : Path to your json file
 	*/
-	void Load(const std::string& path)
-	{
-		std::ifstream in(path);
-		if (!in.is_open())
-		{
-			std::cout << "Error path doesn't exist" << std::endl;
-			return;
-		}
-
-		m_data = json::parse(in);
-		in.close();
-	}
+	void Load(const std::string& path);
 
 	//For what we lost
 	//template<typename T>
@@ -131,17 +114,11 @@ public:
 	* @brief Get the path to the json file
 	* @return std::string : path to the json file
 	*/
-	std::string GetFileName() 
-	{ 
-		return m_fileName; 
-	};
+	std::string GetFileName();
 	/**
 	* @brief Set the path to the json file data will be write/read
 	*/
-	void SetFileName(const std::string& file_name) 
-	{ 
-		m_fileName = file_name; 
-	};
+	void SetFileName(const std::string& file_name);
 	/**
 	* @brief Write data in a Compound storage (function will be call by SerializerManager)
 	* @param Compound& data : Write everything you want in this compound, don't forget to set the file name with SetFileName() before
@@ -163,43 +140,21 @@ private:
 	SerializerManager() = default;
 
 public:
-
-	static SerializerManager& GetInstance()
-	{
-		static SerializerManager instance;
-		return instance;
-	}
-
+	/**
+	* @brief Get SerializerManager singleton
+	*/
+	static SerializerManager& GetInstance();
 	/**
 	* @brief Call WriteCompoundTag() for every ITagSerializer 
 	*/
-	void UpdateTagWritter()
-	{
-		for (ITagSerializer* serializer : m_toUpdate)
-		{
-			Compound c;
-			serializer->WriteCompoundTag(c);
-			c.Save(serializer->GetFileName());
-		}
-	}
+	void UpdateTagWritter();
 	/**
 	* @brief Call ReadCompoundTag() for every ITagSerializer
 	*/
-	void UpdateTagReader()
-	{
-		for (ITagSerializer* serializer : m_toUpdate)
-		{
-			Compound c;
-			c.Load(serializer->GetFileName());
-			serializer->ReadCompoundTag(c);
-		}
-	}
+	void UpdateTagReader();
 	/**
 	* @brief Add a ITagSerializer to the "to update" list
 	* @param ITagSerializer* serializer : serializer you want to add
 	*/
-	void AddTagSerializer(ITagSerializer* serializer) 
-	{ 
-		m_toUpdate.push_back(serializer); 
-	};
+	void AddTagSerializer(ITagSerializer* serializer);
 };

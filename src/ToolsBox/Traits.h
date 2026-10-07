@@ -2,7 +2,7 @@
 * @file Traits.h
 * @brief A bunch of usefull traits
 *
-* @version 1.0
+* @version 1.1
 * @date 2026-07-25
 *
 * @copyright idk bro

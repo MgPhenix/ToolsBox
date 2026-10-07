@@ -2,7 +2,7 @@
 * @file Collider.h
 * @brief Bunch of collider like AABB, OOBB and more 
 *
-* @version 1.0
+* @version 1.1
 * @date 2026-09-30
 *
 * @copyright idk bro
