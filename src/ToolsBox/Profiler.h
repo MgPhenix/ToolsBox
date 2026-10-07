@@ -2,7 +2,7 @@
 * @file Profiler.h
 * @brief A Profiler for get the time that a task take to execute (still WIP)
 *
-* @version 1.0
+* @version 1.1
 * @date 2026-07-04
 *
 * @copyright idk bro

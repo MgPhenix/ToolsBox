@@ -2,7 +2,7 @@
 * @file vector_l.h
 * @brief Light version of std::vector
 *
-* @version 0.1
+* @version 1.0
 * @date 2026-07-30
 *
 * @copyright idk bro
@@ -47,7 +47,7 @@ public:
 			new (&memory[i]) T*(value);
 	}
 
-	void push_back(T&& val)
+	void push_back(T& val)
 	{
 		if (size == capacity)
 		{

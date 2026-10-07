@@ -2,7 +2,7 @@
 * @file unordered_map_l.h
 * @brief Light version of std::unordered_map (still WIP)
 *
-* @version 0.1
+* @version 1.0
 * @date 2026-09-16
 *
 * @copyright idk bro
@@ -50,7 +50,7 @@ struct Node
 * @brief Custom unordered map still W.I.P do not use for now
 */
 template<typename K, typename V, typename Allocator = MyAllocator<Node<K, V>>>
-class MyUnorderedMap
+class unordered_map_l
 {
 private:
 
@@ -60,9 +60,9 @@ private:
 
 public:
 
-	MyUnorderedMap() : buckets(8, nullptr) {}
+	unordered_map_l() : buckets(8, nullptr) {}
 
-	~MyUnorderedMap()
+	~unordered_map_l()
 	{
 		for (auto& bucket : buckets)
 		{
@@ -77,13 +77,10 @@ public:
 			}
 		}
 	}
-
-	void TempAdd(Node<K, V>* truc)
-	{
-		buckets[std::hash<K>{}(truc->key) % 8] = truc;
-	}
-
-	V* find(const K& key)
+	/**
+	* @return If key is valid return the pointer attached to the key
+	*/
+	V* find(const K& key) const
 	{
 		size_t index = std::hash<K>{}(key) % bucket_count;
 		Node<K, V>* current = buckets[index];
@@ -97,7 +94,9 @@ public:
 
 		return nullptr;
 	}
-
+	/**
+	* @brief Add a pair Key, Value in the map
+	*/
 	void insert(K key, V value)
 	{
 		size_t index = std::hash<K>{}(key) % bucket_count;
@@ -122,7 +121,7 @@ public:
 			current->next = newNode;
 	}
 
-	V& operator[](const K& key)
+	bool contains(const K& key) const
 	{
 		size_t index = std::hash<K>{}(key) % bucket_count;
 		Node<K, V>* current = buckets[index];
@@ -130,14 +129,40 @@ public:
 		while (current != nullptr)
 		{
 			if (current->key == key)
-				return current->value;
+				return true;
 			current = current->next;
 		}
 
-		std::cout << "Value not found" << std::endl;
+		return false;
 	}
 
-	MyUnorderedMap(const MyUnorderedMap& other) :
+	V& operator[](const K& key)
+	{
+		V* value = find(key);
+		if (value != nullptr)
+			return *value;
+
+		insert(key, V());
+		return *find(key);
+	}
+
+	void clear()
+	{
+		for (auto& bucket : buckets)
+		{
+			Node<K, V>* current = bucket;
+			while (current != nullptr)
+			{
+				Node<K, V>* next = current->next;
+
+				current->~Node();
+				allocator.deallocate(current, 1);
+				current = next;
+			}
+		}
+	}
+
+	unordered_map_l(const unordered_map_l& other) :
 		bucket_count(other.bucket_count),
 		buckets(other.bucket_count, nullptr)
 	{
@@ -162,14 +187,14 @@ public:
 		}
 	}
 
-	MyUnorderedMap(MyUnorderedMap&& other) :
+	unordered_map_l(unordered_map_l&& other) :
 		bucket_count(other.bucket_count),
 		buckets(std::move(other.buckets))
 	{
 		other.bucket_count = 0;
 	}
 
-	MyUnorderedMap& operator=(const MyUnorderedMap& other)
+	unordered_map_l& operator=(const unordered_map_l& other)
 	{
 		if (this == &other) return *this;
 
@@ -212,7 +237,7 @@ public:
 		return *this;
 	}
 
-	MyUnorderedMap& operator=(MyUnorderedMap&& other)
+	unordered_map_l& operator=(unordered_map_l&& other)
 	{
 		if (this == &other) return *this;
 
@@ -236,7 +261,9 @@ public:
 
 		return *this;
 	}
-
+	/**
+	* @brief Erase a value attached to the key
+	*/
 	void erase(const K& key)
 	{
 		size_t index = std::hash<K>{}(key) % bucket_count;

@@ -1,24 +1,81 @@
 #include "ToolsBox.h"
-#include <iostream>
-#include <functional>
-#include <unordered_map>
-
 #include "unordered_map_l.h"
+
+class Bob : public ITagSerializer
+{
+private:
+
+	int number;
+
+public:
+	Bob() = default;
+
+	int GetNbr() { return number; };
+
+	void WriteCompoundTag(Compound& compound) override
+	{
+		SetFileName("../../Serialize.json");
+		compound["Test"] = 43;
+	}
+	
+	void ReadCompoundTag(Compound& compound) override
+	{
+		SetFileName("../../Serialize.json");
+		number = compound["Test"];
+	}
+};
+
 
 
 int main()
 {
-	AABBCollider collider(2, 2, 4, 4);
-	AABBCollider collider2(2, 2, 4, 4);
-
-	if (collider2.IsCollidingWith(collider))
-		std::cout << "yes collision" << std::endl;
+	SerializerManager& truc = serializerManager;
+	Bob bob;
+	truc.AddTagSerializer(&bob);
+	truc.UpdateTagWritter();
+	truc.UpdateTagReader();
+	std::cout << bob.GetNbr() << std::endl;
 
 	return 0;
 }
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//#define a int
+//#define aa main()
+//#define aaa {
+//#define aaaa }
+//#define aaaaa std::cout
+//#define aaaaaa <<
+//#define aaaaaaa "Hello World"
+//#define aaaaaaaa std::endl
+//#define aaaaaaaaa return 0
+//#define aaaaaaaaaa ;
+//
+//
+//
+//a aa 
+//aaa
+//	aaaaa aaaaaa aaaaaaa aaaaaa aaaaaaaa aaaaaaaaaa
+//	aaaaaaaaa aaaaaaaaaa
+//aaaa
 
 
 

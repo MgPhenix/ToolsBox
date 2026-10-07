@@ -2,7 +2,7 @@
 * @file Traits.h
 * @brief A bunch of usefull traits
 *
-* @version 1.0
+* @version 1.1
 * @date 2026-07-25
 *
 * @copyright idk bro
@@ -21,6 +21,11 @@ template<typename C>
 struct is_same<C, C> {
 	static const bool value = true;
 };
+
+template<typename A, typename B>
+bool constexpr is_same_v = false;
+template<typename C>
+bool constexpr is_same_v<C, C> = true;
 
 
 template<typename T>

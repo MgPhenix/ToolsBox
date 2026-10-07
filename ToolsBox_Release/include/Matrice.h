@@ -2,7 +2,7 @@
 * @file Matrice.h
 * @brief A Generic Matrice class :/
 *
-* @version 0.1
+* @version 1.0
 * @date 2026-09-18
 *
 * @copyright idk bro

@@ -2,7 +2,7 @@
 * @file unordered_map_l.h
 * @brief Light version of std::unordered_map (still WIP)
 *
-* @version 1.0
+* @version 1.1
 * @date 2026-09-16
 *
 * @copyright idk bro

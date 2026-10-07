@@ -2,7 +2,7 @@
 * @file ToolsBox.h
 * @brief Main file, include only this file because this file include all of the other file from the project
 * 
-* @version 1.0
+* @version 1.1
 * @date 2026-07-04
 * 
 * @copyright idk bro
@@ -31,6 +31,7 @@
 #include "Pair.h"
 #include "Matrice.h"
 #include "Collider.h"
+#include "Serialization.h"
 
 #ifdef _DEBUG
 /**
@@ -58,7 +59,7 @@
 * @brief Throw an error and stop programm if condition is false
 */
 #define ASSERT( condition ) if ( condition == false ) throw;
-//#define ASSERT( condition, message ) if ( condition == false ) throw std::runtime_error(message);
+//#define ASSERT( condition, exception ) if ( condition == false ) throw exception;
 
 /**
 * @brief Open a file for write log in it
@@ -93,6 +94,9 @@
 * @param string : name of your task
 */
 #define SCOPE_PROFILER( name ) ScopeProfiler profiler(name);
+
+
+#define serializerManager SerializerManager::GetInstance()
 
 
 using Vector2i = Vector2<int32>;

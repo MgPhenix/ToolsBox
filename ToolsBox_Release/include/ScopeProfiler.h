@@ -2,7 +2,7 @@
 * @file ScopeProfiler.h
 * @brief Scope profiler that get the time a scope take to execute
 *
-* @version 0.1
+* @version 1.0
 * @date 2026-07-04
 *
 * @copyright idk bro

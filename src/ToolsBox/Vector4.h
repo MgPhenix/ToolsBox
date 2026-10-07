@@ -2,7 +2,7 @@
 * @file Vector4.h
 * @brief 3d Vector
 *
-* @version 1.0
+* @version 1.1
 * @date 2026-09-18
 *
 * @copyright idk bro

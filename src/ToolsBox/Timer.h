@@ -2,7 +2,7 @@
 * @file Timer.h
 * @brief Timer using std::chrono but will maybe use windows clock later
 *
-* @version 1.0
+* @version 1.1
 * @date 2026-07-04
 *
 * @copyright idk bro

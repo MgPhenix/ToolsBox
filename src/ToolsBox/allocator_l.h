@@ -2,7 +2,7 @@
 * @file allocator_l.h
 * @brief idk for now
 *
-* @version 1.0
+* @version 1.1
 * @date 2026-07-30
 *
 * @copyright idk bro
