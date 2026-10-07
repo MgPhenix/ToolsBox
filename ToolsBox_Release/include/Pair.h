@@ -2,7 +2,7 @@
 * @file Pair.h
 * @brief Just a struct pair
 *
-* @version 0.1
+* @version 1.0
 * @date 2026-09-16
 *
 * @copyright idk bro

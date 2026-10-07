@@ -2,7 +2,7 @@
 * @file ThreadPool.h
 * @brief Multithreading tool using a ThreadPool for manage thread that execute task
 *
-* @version 0.1
+* @version 1.0
 * @date 2026-07-04
 *
 * @copyright idk bro
@@ -37,7 +37,7 @@ public:
 	ThreadPool();
 	~ThreadPool();
 
-	void WorkerLoop();
+	void WorkerLoop(); //Maybe should be in private ?
 	
 	//NOT MADE BY ME CAUSE IDK HOW IT WORK (i will redo it later) (now i understand how it work)
 	template<typename F,typename... Args>

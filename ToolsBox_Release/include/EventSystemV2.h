@@ -2,7 +2,7 @@
 * @file EventSystemV2.h
 * @brief A better EventSystem than the previous one
 *
-* @version 0.1
+* @version 1.0
 * @date 2026-07-27
 *
 * @copyright idk bro

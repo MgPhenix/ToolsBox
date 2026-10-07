@@ -3,7 +3,7 @@
 * @file Config.h
 * @brief Just some config for macro
 *
-* @version 0.1
+* @version 1.0
 * @date 2026-07-04
 *
 * @copyright idk bro
@@ -26,4 +26,17 @@
 
 #if CPP_VERSION >= 201402L
 #define CPP_14
+#endif
+
+
+#ifdef _WIN32
+#define WINDOWS
+#endif
+
+#ifdef __linux__
+#define LINUX
+#endif 
+
+#ifdef __APPLE__
+#define MACOS
 #endif
