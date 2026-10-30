@@ -32,6 +32,7 @@
 #include "Matrice.h"
 #include "Collider.h"
 #include "Serialization.h"
+#include "queue_l.h"
 
 #ifdef _DEBUG
 /**

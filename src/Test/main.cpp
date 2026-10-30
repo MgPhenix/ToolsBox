@@ -29,12 +29,19 @@ public:
 
 int main()
 {
-	SerializerManager& truc = serializerManager;
-	Bob bob;
-	truc.AddTagSerializer(&bob);
-	truc.UpdateTagWritter();
-	truc.UpdateTagReader();
-	std::cout << bob.GetNbr() << std::endl;
+
+	queue_l<int> test;
+	test.push(12);
+	test.push(63);
+
+	std::cout << test[1] << std::endl;
+
+	//SerializerManager& truc = serializerManager;
+	//Bob bob;
+	//truc.AddTagSerializer(&bob);
+	//truc.UpdateTagWritter();
+	//truc.UpdateTagReader();
+	//std::cout << bob.GetNbr() << std::endl;
 
 	return 0;
 }
