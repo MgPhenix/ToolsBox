@@ -10,13 +10,16 @@
 */
 #pragma once
 #include "Config.h"
+#include <stdexcept>
 
 #if defined(LINUX) || defined(MACOS)
 #include <cstddef>
 #endif
 
 
-
+/**
+* @brief Simple queue node who store the T value and a pointer to the next node
+*/
 template<typename T>
 struct QueueNode
 {
@@ -24,6 +27,9 @@ struct QueueNode
 	QueueNode<T>* next = nullptr;
 };
 
+/**
+* @brief A Queue designed to be light and usefull with multiple function
+*/
 template<typename T>
 class queue_l
 {
@@ -34,12 +40,12 @@ private:
 	
 private:
 
-	QueueNode<T>* FrontNode()
+	QueueNode<T>* FrontNode() const
 	{
 		return first;
 	}
 
-	QueueNode<T>* BackNode()
+	QueueNode<T>* BackNode() const
 	{
 		if (first == nullptr)
 			return nullptr;
@@ -51,7 +57,7 @@ private:
 		return current;
 	}
 
-	QueueNode<T>* PreviousBackNode()
+	QueueNode<T>* PreviousBackNode() const
 	{
 		if (first == nullptr)
 			return nullptr;
@@ -65,14 +71,30 @@ private:
 
 public:
 
+	/**
+	* @brief Default constructor
+	*/
 	queue_l() = default;
+	/**
+	* @return Return the size_t size of the queue
+	*/
+	size_t Size() const { return size; };
+	/**
+	* @return Return the first value of the queue
+	*/
+	T& Front() const { return FrontNode()->value; };
+	/**
+	* @return Return the last value of the queue
+	*/
+	T& Back()  const { return BackNode()->value;  };
 
-	size_t Size() { return size; };
+public:
 
-	T& Front() { return FrontNode()->value; };
-	T& Back() { return BackNode()->value; };
-
-	void push(T&& value)
+	/**
+	* @brief Insert a value in the back of the queue
+	* @tparam T value : Value you want to insert
+	*/
+	void push(T& value)
 	{
 		size++;
 
@@ -89,24 +111,14 @@ public:
 		new_node->value = value;
 		back->next = new_node;
 	}
-
-	T& operator[](size_t indice)
-	{
-		if (indice >= size) 
-			throw;
-
-		QueueNode<T>* current = first;
-		for(size_t i = 0; i < indice; i++)
-			current = current->next;
-
-
-		return current->value;
-	}
-
+	/**
+	* @brief Detach the first element from the queue and return it
+	* @return Return the first T value of the queue
+	*/
 	T pop()
 	{
-		if (first == nullptr) 
-			throw;
+		if (first == nullptr)
+			throw std::runtime_error("queue_l : queue is empty");
 
 		T value = first->value;
 
@@ -126,11 +138,14 @@ public:
 
 		return value;
 	}
-
+	/**
+	* @brief Detach the last element from the queue and return it
+	* @return Return the last T value of the queue
+	*/
 	T pop_back()
 	{
 		if (first == nullptr)
-			throw;
+			throw std::runtime_error("queue_l : queue is empty");
 
 		QueueNode<T>* previous_back = PreviousBackNode();
 		QueueNode<T>* back = previous_back->next;
@@ -141,5 +156,18 @@ public:
 		delete back;
 
 		return value;
+	}
+
+	T& operator[](size_t indice) const
+	{
+		if (indice >= size) 
+			throw std::out_of_range("queue_l : index out of range");
+
+		QueueNode<T>* current = first;
+		for(size_t i = 0; i < indice; i++)
+			current = current->next;
+
+
+		return current->value;
 	}
 };
