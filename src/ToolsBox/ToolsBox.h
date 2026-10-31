@@ -87,7 +87,7 @@
 /**
 * @brief Print and save an Critical Error log (File must be open with OPEN_FILE( FILE )
 */
-#define LOG_CRITICAL( message ) Logfile::GetInstance().LOG(Severity::CRITICAL, messsage);
+#define LOG_CRITICAL( message ) Logfile::GetInstance().LOG(Severity::CRITICAL, message);
 
 /**
 * @brief Print the time that the scope take to execute
