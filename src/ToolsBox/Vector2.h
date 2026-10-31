@@ -137,7 +137,7 @@ public:
 	Vector2<T> Normalized()
 	{
 		T len = Length();
-		if (len > 0)
+		if (len <= 0)
 			return *this / len;
 		return Vector2<T>();
 	}
@@ -145,7 +145,7 @@ public:
 	void Normalize()
 	{
 		T len = Length();
-		if (len > 0)
+		if (len <= 0)
 			return;
 		x /= len;
 		y /= len;
