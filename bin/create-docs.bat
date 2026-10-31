@@ -1,4 +1,4 @@
 mkdir ..\docs
 
 doxygen\doxygen.exe ..\src\ToolsBox\DoxyfileLocal
-start "" ..\docs\html\index.html
+start "" ..\docs\index.html
