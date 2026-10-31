@@ -6,7 +6,7 @@
 * @date 2026-07-27
 *
 * @copyright idk bro
-* @author MgPhenix (https://github.com/MgPhenix)
+* @author MgPhenix (https://github.com/MgPhenix) & Marien-Garon (https://github.com/Marien-Garon)
 */
 #pragma once
 #include "Traits.h"
@@ -153,8 +153,22 @@ public:
 	*/
 	static EventSystemV2& GetInstance()
 	{
-		static EventSystemV2 instance;
-		return instance;
+		static EventSystemV2* instance = new EventSystemV2;
+		return *instance;
+	}
+
+	void DestroyInstance()
+	{
+		delete &GetInstance();
+	}
+
+	EventSystemV2() = default;
+
+	~EventSystemV2()
+	{
+		for (auto& pair : m_dispatcher)
+			delete pair.second;
+		m_dispatcher.clear();
 	}
 
 	/**
@@ -172,9 +186,9 @@ public:
 		IDispatcher* dispatcher = nullptr;
 
 #ifdef CPP_20
-		if (!m_dispatcher.contains(emiter))
+		if (m_dispatcher.contains(emiter))
 #else
-		if (!m_dispatcher.count(emiter))
+		if (m_dispatcher.count(emiter))
 #endif
 			dispatcher = m_dispatcher[emiter];
 

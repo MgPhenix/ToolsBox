@@ -6,7 +6,7 @@
 * @date 2026-10-03
 *
 * @copyright idk bro
-* @author MgPhenix (https://github.com/MgPhenix)
+* @author MgPhenix (https://github.com/MgPhenix) & Marien-Garon (https://github.com/Marien-Garon)
 */
 #pragma once
 #include <string>
@@ -144,6 +144,10 @@ public:
 	* @brief Get SerializerManager singleton
 	*/
 	static SerializerManager& GetInstance();
+	/**
+	* @brief Destroy SerializerManager singleton
+	*/
+	void DestroyInstance();
 	/**
 	* @brief Call WriteCompoundTag() for every ITagSerializer 
 	*/

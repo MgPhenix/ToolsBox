@@ -39,10 +39,14 @@ void ITagSerializer::SetFileName(const std::string& file_name)
 
 SerializerManager& SerializerManager::GetInstance()
 {
-	static SerializerManager instance;
-	return instance;
+	static SerializerManager* instance = new SerializerManager;
+	return *instance;
 }
 
+void SerializerManager::DestroyInstance()
+{
+	delete& GetInstance();
+}
 
 void SerializerManager::UpdateTagWritter()
 {

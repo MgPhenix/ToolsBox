@@ -6,7 +6,7 @@
 * @date 2026-07-04
 *
 * @copyright idk bro
-* @author MgPhenix (https://github.com/MgPhenix)
+* @author MgPhenix (https://github.com/MgPhenix) & Marien-Garon (https://github.com/Marien-Garon)
 */
 #pragma once
 #include <unordered_map>

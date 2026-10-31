@@ -7,7 +7,7 @@
 * @date 2026-07-04
 *
 * @copyright idk bro
-* @author MgPhenix (https://github.com/MgPhenix)
+* @author MgPhenix (https://github.com/MgPhenix) & Marien-Garon (https://github.com/Marien-Garon)
 */
 #ifdef _MSVC_LANG
 #define CPP_VERSION _MSVC_LANG

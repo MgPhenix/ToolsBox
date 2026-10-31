@@ -1,4 +1,21 @@
+/**
+* @file queue_l.h
+* @brief A simple queue (W.I.P)
+*
+* @version 1.1
+* @date 2026-10-30
+*
+* @copyright idk bro
+* @author MgPhenix (https://github.com/MgPhenix) & Marien-Garon (https://github.com/Marien-Garon)
+*/
 #pragma once
+#include "Config.h"
+
+#if defined(LINUX) || defined(MACOS)
+#include <cstddef>
+#endif
+
+
 
 template<typename T>
 struct Node
