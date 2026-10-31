@@ -18,10 +18,10 @@
 
 
 template<typename T>
-struct Node
+struct QueueNode
 {
 	T value;
-	Node<T>* next = nullptr;
+	QueueNode<T>* next = nullptr;
 };
 
 template<typename T>
@@ -29,14 +29,48 @@ class queue_l
 {
 private:
 
-	Node<T>* first = nullptr;
+	QueueNode<T>* first = nullptr;
 	size_t size = 0;
 	
+private:
+
+	QueueNode<T>* FrontNode()
+	{
+		return first;
+	}
+
+	QueueNode<T>* BackNode()
+	{
+		if (first == nullptr)
+			return nullptr;
+
+		QueueNode<T>* current = first;
+		while (current->next != nullptr)
+			current = current->next;
+
+		return current;
+	}
+
+	QueueNode<T>* PreviousBackNode()
+	{
+		if (first == nullptr)
+			return nullptr;
+
+		QueueNode<T>* current = first;
+		for (size_t i = 0; i < size - 1; i++)
+			current = current->next;
+
+		return current;
+	}
+
 public:
 
 	queue_l() = default;
 
 	size_t Size() { return size; };
+
+	T& Front() { return FrontNode()->value; };
+	T& Back() { return BackNode()->value; };
 
 	void push(T&& value)
 	{
@@ -44,21 +78,16 @@ public:
 
 		if (first == nullptr)
 		{
-			first = new Node<T>;
+			first = new QueueNode<T>;
 			first->value = value;
 			return;
 		}
 
-		Node<T>* current = first;
+		QueueNode<T>* back = BackNode();
 
-		while (current->next != nullptr)
-		{
-			current = current->next;
-		}
-
-		Node<T>* new_node = new Node<T>;
+		QueueNode<T>* new_node = new QueueNode<T>;
 		new_node->value = value;
-		current->next = new_node;
+		back->next = new_node;
 	}
 
 	T& operator[](size_t indice)
@@ -66,20 +95,20 @@ public:
 		if (indice >= size) 
 			throw;
 
-		Node<T>* current = first;
-		for(size_t i = 0; i <= indice; i++)
+		QueueNode<T>* current = first;
+		for(size_t i = 0; i < indice; i++)
 			current = current->next;
 
 
 		return current->value;
 	}
 
-	T& pop()
+	T pop()
 	{
 		if (first == nullptr) 
 			throw;
 
-		T& value = first->value;
+		T value = first->value;
 
 		if (first->next == nullptr)
 		{
@@ -89,11 +118,27 @@ public:
 		}
 		else
 		{
-			Node<T*> old_first = first;
+			QueueNode<T>* old_first = first;
 			first = first->next;
 			delete old_first;
 			size--;
 		}
+
+		return value;
+	}
+
+	T pop_back()
+	{
+		if (first == nullptr)
+			throw;
+
+		QueueNode<T>* previous_back = PreviousBackNode();
+		QueueNode<T>* back = previous_back->next;
+
+		T value = back->value;
+
+		previous_back->next = nullptr;
+		delete back;
 
 		return value;
 	}
