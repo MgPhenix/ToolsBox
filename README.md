@@ -193,7 +193,7 @@ ToolsBox/
 ├── bin/                 # Build scripts and build-related files
 ├── config/              # Configuration files
 ├── Natvis/              # Visual Studio debugger visualizers
-├── ToolsBox_Release/    # Release-related files
+├── docs/                # Doxygen documentation
 ├── .github/
 │   └── workflows/       # GitHub Actions workflows
 ├── CHANGELOG.md
@@ -227,3 +227,7 @@ Pull requests and forks are welcome.
 **MgPhenix**
 
 GitHub: [github.com/MgPhenix](https://github.com/MgPhenix)
+
+**Marien-Garon**
+
+Github: [github.com/Marien-Garon](https://github.com/Marien-Garon)
