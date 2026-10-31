@@ -144,7 +144,7 @@ struct Vector3
 	Vector3<T> Normalized()
 	{
 		T len = Length();
-		if (len > 0)
+		if (len <= 0)
 			return *this / len;
 		return Vector3<T>();
 	}
@@ -152,7 +152,7 @@ struct Vector3
 	void Normalize()
 	{
 		T len = Length();
-		if (len > 0)
+		if (len <= 0)
 			return;
 		x /= len;
 		y /= len;
