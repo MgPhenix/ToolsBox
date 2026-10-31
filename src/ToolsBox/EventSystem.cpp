@@ -1,14 +1,14 @@
 #include "EventSystem.h"
 #include <algorithm>
 
-EventSystem& EventSystem::GetInstance()
+EventSystemOld& EventSystemOld::GetInstance()
 {
-	static EventSystem instance;
+	static EventSystemOld instance;
 	return instance;
 }
 
 #ifdef CPP_17
-ListenerID EventSystem::Subscribe(const std::string& emiter, std::function<void(const EventData&)> func)
+ListenerID EventSystemOld::Subscribe(const std::string& emiter, std::function<void(const EventData&)> func)
 #else
 ListenerID EventSystem::Subscribe(const std::string& emiter, std::function<void()> func)
 #endif
@@ -19,7 +19,7 @@ ListenerID EventSystem::Subscribe(const std::string& emiter, std::function<void(
 }
 
 #ifdef CPP_17
-ListenerID EventSystem::SubscribeOnce(const std::string& emiter, std::function<void(const EventData&)> func)
+ListenerID EventSystemOld::SubscribeOnce(const std::string& emiter, std::function<void(const EventData&)> func)
 #else
 ListenerID EventSystem::SubscribeOnce(const std::string& emiter, std::function<void()> func)
 #endif
@@ -29,7 +29,7 @@ ListenerID EventSystem::SubscribeOnce(const std::string& emiter, std::function<v
 #ifdef CPP_17
 	m_listeners[emiter].push_back({ id, [emiter, id, function = std::move(func)](const EventData& data) {
 		function(data);
-		EventSystem::GetInstance().Unsubscribe(emiter, id);
+		EventSystemOld::GetInstance().Unsubscribe(emiter, id);
 	}});
 #else
 	m_listeners[emiter].push_back({ id, [emiter, id, function = std::move(func)]() {
@@ -41,7 +41,7 @@ ListenerID EventSystem::SubscribeOnce(const std::string& emiter, std::function<v
 	return id;
 }
 
-void EventSystem::Unsubscribe(const std::string& emiter, ListenerID id)
+void EventSystemOld::Unsubscribe(const std::string& emiter, ListenerID id)
 {
 #ifdef CPP_20
 	if (!m_listeners.contains(emiter))
@@ -58,7 +58,7 @@ void EventSystem::Unsubscribe(const std::string& emiter, ListenerID id)
 	);
 }
 #ifdef CPP_17
-void EventSystem::Emit(const std::string& emiter, const EventData& data)
+void EventSystemOld::Emit(const std::string& emiter, const EventData& data)
 {
 	for (auto& listener : m_listeners[emiter])
 		listener.m_func(data);
@@ -71,12 +71,12 @@ void EventSystem::Emit(const std::string& emiter)
 }
 #endif
 
-void EventSystem::EraseEmiter(const std::string& emiter)
+void EventSystemOld::EraseEmiter(const std::string& emiter)
 {
 	m_listeners.erase(emiter);
 }
 
-void EventSystem::ClearAll()
+void EventSystemOld::ClearAll()
 {
 	m_listeners.clear();
 }

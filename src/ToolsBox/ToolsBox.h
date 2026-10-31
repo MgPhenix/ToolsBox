@@ -99,7 +99,7 @@
 
 // Singletons //
 #define serializerManager SerializerManager::GetInstance()
-#define eventSystem EventSystemV2::GetInstance()
+#define eventSystem EventSystem::GetInstance()
 // // // // //
 
 using Vector2i = Vector2<int32>;

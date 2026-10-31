@@ -6,7 +6,7 @@ EventSystem tuto
 
 int main()
 {
-    EventSystem& ES = EventSystem::GetInstance();
+    EventSystemOld& ES = EventSystemOld::GetInstance();
 
 
     /// Subscribe/Emit ///

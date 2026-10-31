@@ -139,7 +139,7 @@ struct func_args<std::function<R(Args...)>>
 * @brief An EventSystem where you can subscribe a listener to an event, the function of the listener will be executed when the event will be called
 * @brief Better version of the normal EventSystem because he auto guess type of variable you pass and don't use std::any
 */
-class EventSystemV2
+class EventSystem
 {
 private:
 
@@ -151,20 +151,22 @@ public:
 	/**
 	* @brief Return the singelton instance of EventSystem
 	*/
-	static EventSystemV2& GetInstance()
+	static EventSystem& GetInstance()
 	{
-		static EventSystemV2* instance = new EventSystemV2;
+		static EventSystem* instance = new EventSystem;
 		return *instance;
 	}
-
+	/**
+	* @brief Destroy the singleton instance of EventSystem
+	*/
 	void DestroyInstance()
 	{
 		delete &GetInstance();
 	}
 
-	EventSystemV2() = default;
+	EventSystem() = default;
 
-	~EventSystemV2()
+	~EventSystem()
 	{
 		for (auto& pair : m_dispatcher)
 			delete pair.second;
