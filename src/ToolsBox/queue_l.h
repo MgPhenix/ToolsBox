@@ -11,6 +11,7 @@
 #pragma once
 #include "Config.h"
 #include <stdexcept>
+#include <functional>
 
 #if defined(LINUX) || defined(MACOS)
 #include <cstddef>
@@ -87,14 +88,18 @@ public:
 	* @return Return the last value of the queue
 	*/
 	T& Back()  const { return BackNode()->value;  };
+	/**
+	* @return Return true if the queue is empty
+	*/
+	bool Empty() const { return size == 0 ? true : false; };
 
 public:
 
 	/**
 	* @brief Insert a value in the back of the queue
-	* @tparam T value : Value you want to insert
+	* @tparam T lvalue you want to insert
 	*/
-	void push(T& value)
+	void push(const T& value)
 	{
 		size++;
 
@@ -109,6 +114,49 @@ public:
 
 		QueueNode<T>* new_node = new QueueNode<T>;
 		new_node->value = value;
+		back->next = new_node;
+	}
+	/**
+	* @brief Insert a value in the back of the queue
+	* @tparam T rvalue you want to insert
+	*/
+	void push(T&& value)
+	{
+		size++;
+
+		if (first == nullptr)
+		{
+			first = new QueueNode<T>;
+			first->value = std::move_if_noexcept(value);
+			return;
+		}
+
+		QueueNode<T>* back = BackNode();
+
+		QueueNode<T>* new_node = new QueueNode<T>;
+		new_node->value = std::move_if_noexcept(value);
+		back->next = new_node;
+	}
+	/**
+	* @brief Emplace a value in the back of the queue
+	* @tparam Args argument of the value to emplace
+	*/
+	template<typename... Args>
+	void emplace(Args&&... args)
+	{
+		size++;
+
+		if (first == nullptr)
+		{
+			first = new QueueNode<T>;
+			first->value = T(std::forward<Args>(args)...);
+			return;
+		}
+
+		QueueNode<T>* back = BackNode();
+
+		QueueNode<T>* new_node = new QueueNode<T>;
+		new_node->value = T(std::forward<Args>(args)...);
 		back->next = new_node;
 	}
 	/**
@@ -156,6 +204,46 @@ public:
 		delete back;
 
 		return value;
+	}
+	/**
+	* @brief Erase an element from the queue
+	* @param size_t indice of the element to delete
+	*/
+	void erase(size_t indice)
+	{
+		if (indice >= size)
+			throw std::out_of_range("queue_l : index out of range");
+
+		size--;
+
+		QueueNode<T>* current = FrontNode();
+		for (size_t i = 0; i < indice - 1; i++)
+			current = current->next;
+
+		QueueNode<T>* to_delete = current->next;
+		QueueNode<T>* to_raccord = to_delete->next;
+
+		delete to_delete;
+
+		if (to_raccord == nullptr)
+			current->next = nullptr;
+		else
+			current->next = to_raccord;
+	}
+	/**
+	* @brief Erase all element who match conditions
+	* @param function : when return true erase the element that match the conditions
+	*/
+	void erase_if(std::function<bool(const T&)> condition)
+	{
+		
+	}
+	/**
+	* @brief TODO
+	*/
+	void quick_sort()
+	{
+
 	}
 
 	T& operator[](size_t indice) const

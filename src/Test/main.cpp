@@ -1,5 +1,6 @@
 #include "ToolsBox.h"
 #include "unordered_map_l.h"
+#include <queue>
 
 class Bob : public ITagSerializer
 {
@@ -29,9 +30,10 @@ public:
 
 int main()
 {
+	Bob* bob = new Bob;
 
 	queue_l<int> test;
-	test.push(12);
+	test.push(85);
 	test.push(63);
 
 	std::cout << test[1] << std::endl;
