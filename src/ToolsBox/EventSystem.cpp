@@ -1,4 +1,5 @@
 #include "EventSystem.h"
+#include <algorithm>
 
 EventSystem& EventSystem::GetInstance()
 {
