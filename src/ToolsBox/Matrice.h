@@ -15,8 +15,9 @@
 #include "Vector3.h"
 #include "Vector4.h"
 #include "Pair.h"
-#include "Traits.h"
+#include "PrimitiveTypes.h"
 
+#define ASSERT( condition ) if ( condition == false ) throw; // scotch solution V2
 
 #pragma region Matrice
 
