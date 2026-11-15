@@ -74,7 +74,7 @@ jobs:
               -Recurse
 
           Get-ChildItem -Path "./src/ToolsBox" -Recurse -File |
-              Where-Object { $_.Extension -in ".h", ".inl" } |
+              Where-Object { $_.Extension -in ".h", ".inl", ".hpp" } |
               Copy-Item -Destination {
                   Join-Path "dist/package-windows/include" $_.Name
               }
@@ -98,7 +98,7 @@ jobs:
               -Recurse
 
           Get-ChildItem -Path "./src/ToolsBox" -Recurse -File |
-              Where-Object { $_.Extension -in ".h", ".inl" } |
+              Where-Object { $_.Extension -in ".h", ".inl", ".hpp" } |
               Copy-Item -Destination {
                   Join-Path "dist/package-linux/include" $_.Name
               }
@@ -122,7 +122,7 @@ jobs:
               -Recurse
 
           Get-ChildItem -Path "./src/ToolsBox" -Recurse -File |
-              Where-Object { $_.Extension -in ".h", ".inl" } |
+              Where-Object { $_.Extension -in ".h", ".inl", ".hpp" } |
               Copy-Item -Destination {
                   Join-Path "dist/package-macos/include" $_.Name
               }
